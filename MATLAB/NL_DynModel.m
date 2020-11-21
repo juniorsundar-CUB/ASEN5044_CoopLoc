@@ -16,18 +16,5 @@ xdot = [u(1)*cos(x(3)) + Pnoise(1);
         u(3)*cos(x(6)) + Pnoise(4);
         u(3)*sin(x(6)) + Pnoise(5);
         u(4) + Pnoise(6)];
-    
-% if x(3)>pi
-%     x(3) = -pi + (x(3)-pi);
-% elseif x(3)<-pi
-%     x(3) = pi - (x(3)+pi) ;
-% end
-% 
-% if x(6)>pi
-%     x(6) = -pi + (x(6)-pi);
-% elseif x(6)<-pi
-%     x(6) = pi - (x(6)+pi) ;
-% end
-
 end
 
