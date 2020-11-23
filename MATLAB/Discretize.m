@@ -5,9 +5,9 @@ function [F, G, H] = Discretize(A_t,B_t,C_t, Dt)
 %   B_t - lizearized CT input matrix
 %   C_t - linearized CT measurement matrix
 %   Output
-%   F - 
-%   G -
-%   H - 
+%   F - state transition matrix
+%   G -control effect matrix
+%   H - sensing matrix
 %
 %   Discretizze the CT state perturbation matrices
 
