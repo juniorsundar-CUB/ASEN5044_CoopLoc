@@ -32,7 +32,7 @@ for i=1:length(t)
     H(:,:,i) = C_t;
 end
 
-[x_DTL, dx_DTL, y_DTL, dy_DTL] = DT_L_Model(t,Dt,x_NL,y_NL,x_pert,u_nom);
+[x_DTL, dx_DTL, y_DTL, dy_DTL, ~,~,~] = DT_L_Model(t,Dt,x_NL,y_NL,x_pert,u_nom);
 
 %% Plot 2
 ulab = {'v_g', '\phi_g', 'v_a', '\omega_a'};

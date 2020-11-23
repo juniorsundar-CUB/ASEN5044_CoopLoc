@@ -1,11 +1,11 @@
-function [x_DTL, dx_DTL, y_DTL, dy_DTL] = DT_L_Model(t,Dt,x_NL,y_NL,x_pert,u_nom)
+function [x_DTL, dx_DTL, y_DTL, dy_DTL, F, H, O] = DT_L_Model(t,Dt,x_NL,y_NL,x_pert,u_nom)
 %DT_L_Model
 %   input: t - time; Dt - time increment; x_NL - nominal state trajectory;
 %          y_NL - nominal sensor readings; x_pert - initial state
 %          perturbation; u_nom = nominal control input;
 %   output: x_DTL = discrete time state; dx_DTL = discrete time state 
 %           perturbation; y_DTL = discrete time sensor; dy_DTL = discrete
-%           time sensor perturbation
+%           time sensor perturbation; F - F_k; H - H_k; O = O_k
 %   Function for linear DT model
 
 % u = [v_g, phi_g, v_a, w_a]';
@@ -19,12 +19,14 @@ y_nominal = y_NL;
 
 F = zeros(6,6,length(t));
 H = zeros(5,6,length(t));
+O = zeros(6,6,length(t));
 
 % Evaluate F and H matrices with predef nominal state trajectories
 for i=1:length(t)
     [A_t, ~, C_t] = Linearize(x_nominal(:,i),u_nom);
     F(:,:,i) = eye(6) + A_t*Dt;
     H(:,:,i) = C_t;
+    O(:,:,i) = Dt*eye(6,6);
 end
 
 dx_DTL = zeros(6,length(t));
