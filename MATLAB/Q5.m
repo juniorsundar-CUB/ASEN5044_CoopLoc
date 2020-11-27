@@ -10,4 +10,5 @@ P0 = eye(n).*0.0003;
 
 steps = 1000;
 seed = 100;
+rng(seed);
 [x, y] = GenerateTruth(x_nom, u_nom, P0, Qtrue, Rtrue, Dt, steps, seed);

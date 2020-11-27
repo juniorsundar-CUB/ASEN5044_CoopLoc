@@ -1,5 +1,5 @@
-function [x, y] = GenerateTruth(x0, u, P0, Q, R, Dt, steps, seed)    
-rng(seed);
+function [x, y] = GenerateTruth(x0, u, P0, Q, R, Dt, steps)
+
 n = size(x0,1);
 p = size(R,1);
 
