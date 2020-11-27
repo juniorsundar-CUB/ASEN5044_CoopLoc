@@ -1,11 +1,43 @@
-% Extended Kalman Filter
+function [x_est, y_est, P] = EKF(x0, P0, y, Q, R)
 
-x_nom = [10 0 pi/2 -60 0 -pi/2]';
-u_nom = [2 -pi/18 12 pi/25]';
-Dt = 0.1;
+n = size(x0, 1);
+p = size(R, 1);
+steps = size(y,1);
 
-[A_t,B_t,C_t] = Linearize(x_nom, u_nom);
-[F, G, H] = Discretize(A_t,B_t,C_t, Dt);
-disp('F: '), disp(F);
-disp('G: '), disp(G);
-disp('H: '), disp(H);
+x_est = zeros(n, steps);
+y_est = zeros(p, steps);
+P = zeros(n, n, steps);
+
+x_p = x0;
+P_p = P0;
+
+for i=1:steps
+    
+    % Prediction Step
+    [~, x_m] = ode45(@NL_DynModel, [0.0 deltaT], x_p', [], u');
+
+    [A_t,B_t,C_t] = Linearize(x_m, u);
+    [F, ~, H] = Discretize(A_t,B_t,C_t, Dt);
+    
+    P_m = F*P_p*F' + Q;
+
+    x_m(3) = wrapToPi(x_m(3));
+    x_m(6) = wrapToPi(x_m(6));
+    y_est(:,:,i) = NL_MeasModel(x_m);
+    e_y = y(:,:,i) - y_est(:,:,i);
+
+    % Correction Step
+    S = H*P_m*H' + R;
+    K = P_m*H'/S;
+
+    x_p = x_m + K*e_y;
+    P_p = (eye(p) - K*H)*P_m;
+
+    x_p(3) = wrapToPi(x_p(3));
+    x_p(6) = wrapToPi(x_p(6));
+    x_est(:,i) = x_p;
+    P(:,:,i) = P_p;
+end
+
+end
+
