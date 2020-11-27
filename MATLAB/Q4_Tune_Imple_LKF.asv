@@ -14,6 +14,6 @@ steps = 1000;
 t = 0:Dt:steps*Dt;
 seed = 100;
 rng(seed);
-Qtrue = zeros(size(Qtrue));
-Rtrue = zeros(size(Rtrue));
+QTrue = zeros(size(QTrue));
+QTrue = zeros(size(QTrue));
 [x, y] = GenerateTruth(x_nom, u_nom, P0, Qtrue, Rtrue, Dt, steps);
