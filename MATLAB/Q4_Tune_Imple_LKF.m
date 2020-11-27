@@ -12,12 +12,9 @@ NEES_all = zeros(N,steps+1);
 NIS_all = zeros(N,steps+1);
 
 % Tuning parameters
-% Q = 0.01*eye(6);
 Q = 0.001*ones(6,6);
 R = 30*eye(5);
-% load('cooplocalization_finalproj_KFdata.mat')
-% Q = Qtrue;
-% R = Rtrue;
+
 for i=1:N
     disp(i)
     NEES = zeros(1,steps+1);
@@ -48,6 +45,7 @@ rx2 = (chi2inv(1-alpha/2,N*n))./N;
 ry1 = (chi2inv(alpha/2,N*p))./N;
 ry2 = (chi2inv(1-alpha/2,N*p))./N;
 
+%% Plots
 figure(1)
 subplot(2,1,1)
 scatter(t,NEES_bar)
