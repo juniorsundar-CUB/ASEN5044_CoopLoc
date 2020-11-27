@@ -1,6 +1,4 @@
-% Tune LKF
-clc
-clear
+function [x_est,dx,P,S,e_x,e_y] = LKF_MonteCarlo(Q,R)
 load("cooplocalization_finalproj_KFdata.mat");
 
 x_nom = [10 0 pi/2 -60 0 -pi/2]';
@@ -13,8 +11,6 @@ P0 = eye(n).*0;
 
 steps = 1000;
 t = 0:Dt:steps*Dt;
-seed = 100;
-rng(seed);
 
 % Generate truth model outputs for nominal trajectories
 [x_truth, y_truth] = GenerateTruth(x_nom, u_nom, P0, Qtrue, Rtrue, Dt, steps);
@@ -39,15 +35,14 @@ Ok = zeros(6,6,length(t));
 
 for i=1:length(t)
     [A_t, B_t, C_t] = Linearize(x_nominal(:,i),u_nom);
-    [Fk(:,:,i), G, Hk(:,:,i)] = Discretize(A_t,B_t,C_t, Dt);
+    [Fk(:,:,i), ~ , Hk(:,:,i)] = Discretize(A_t,B_t,C_t, Dt);
     Ok(:,:,i) = eye(6);
 end
 
 % Run LKF on Data
 dx_init = x_pert;
 P_init = 999*eye(6);
-%%Tuning PARAMS
-Q = Qtrue;
-R = Rtrue;
 
 [x_est,dx,P,S,e_x,e_y] = LKF(dx_init,P_init,x_NL,y_NL,x_truth,y_truth,Fk,Hk,Ok,Q,R);
+end
+
