@@ -13,7 +13,11 @@ dy = y-y_nom;
 P(:,:,1) = P_init;
 I = eye(n);
 e_y = zeros(p,steps+1);
+
 e_y(:,1) =  y(:,1) - Hk(:,:,1)*(x_nom(:,1) + dx(:,1));
+
+y_est = zeros(5,steps+1);
+y_est(:,1) = Hk(:,:,1)*(x_nom(:,1) + dx(:,1));
 
 x_nom(3,:) = wrapToPi(x_nom(3,:));
 x_nom(6,:) = wrapToPi(x_nom(6,:));
@@ -36,14 +40,12 @@ for i=1:steps
     % Correction Step
     S(:,:,i+1) = Hk(:,:,i+1)*P(:,:,i+1)*Hk(:,:,i+1)' + R;
     K(:,:,i+1) = P(:,:,i+1)*Hk(:,:,i+1)'*inv(S(:,:,i+1));
-    e_y(:,i+1) = y(:,i+1) - Hk(:,:,i+1)*(x_nom(:,i+1) + dx(:,i+1));
+    
+    y_est(:,i+1) = Hk(:,:,i+1)*(x_nom(:,i+1) + dx(:,i+1));
+    e_y(:,i+1) = y(:,i+1) - y_est(:,i+1);
+    
     dx(:,i+1) = dx(:,i+1) + K(:,:,i+1)*(dy(:,i+1) - Hk(:,:,i+1)*dx(:,i+1));
     P(:,:,i+1) = (I - K(:,:,i+1)*Hk(:,:,i+1))*P(:,:,i+1);
-end
-y_est = zeros(5,steps+1);
-
-for i = 1:steps+1
-    y_est = Hk(:,:,i)*(x_nom(:,i) + dx(:,i));
 end
 
 y_est(1,:) = wrapToPi(y_est(1,:));
