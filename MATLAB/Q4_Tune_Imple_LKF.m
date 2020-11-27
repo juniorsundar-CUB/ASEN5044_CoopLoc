@@ -7,21 +7,23 @@ Dt = 0.1;
 steps = 1000;
 n = 6; p = 5; t = 0:Dt:steps*Dt;
 
-N = 10;        % No. of Monte Carlo runs
+N = 100;        % No. of Monte Carlo runs
 NEES_all = zeros(N,steps+1);
 NIS_all = zeros(N,steps+1);
 
 % Tuning parameters
-Q = 0.001*eye(6,6);
-Q(3,3) = 0.1;
-Q(6,6) = 0.1;
-Q(4,4) = 0.1;
 Q(1,1) = 10;
 Q(2,2) = 10;
+Q(3,3) = 0.1;
+Q(4,4) = 0.001;
 Q(5,5) = 10;
-R = 20*eye(5);
-% R(5,5) = 100;
-% R(4,4) = 50;
+Q(6,6) = 0.1;
+
+R(1,1) = 20;
+R(2,2) = 20;
+R(3,3) = 30;
+R(4,4) = 20;
+R(5,5) = 20;
 
 for i=1:N
     disp(i)
