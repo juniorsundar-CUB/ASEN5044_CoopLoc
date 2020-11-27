@@ -12,12 +12,10 @@ NEES_all = zeros(N,steps+1);
 NIS_all = zeros(N,steps+1);
 
 % Tuning parameters
-% Q = 0.01*eye(6);
 Q = 0.001*ones(6,6);
+Q(2,2) = 0.1
 R = 30*eye(5);
-% load('cooplocalization_finalproj_KFdata.mat')
-% Q = Qtrue;
-% R = Rtrue;
+
 for i=1:N
     disp(i)
     NEES = zeros(1,steps+1);
@@ -48,6 +46,7 @@ rx2 = (chi2inv(1-alpha/2,N*n))./N;
 ry1 = (chi2inv(alpha/2,N*p))./N;
 ry2 = (chi2inv(1-alpha/2,N*p))./N;
 
+%% Plots
 figure(1)
 subplot(2,1,1)
 scatter(t,NEES_bar)
@@ -55,9 +54,10 @@ hold on
 plot(t,ones(1,length(t))*rx1,'r--','LineWidth',1.5)
 plot(t,ones(1,length(t))*rx2,'r--','LineWidth',1.5)
 hold off
-title('NEES Test: $bar{\epsilon}_x$ vs. $t$','FontSize',16,'Interpreter','latex')
-ylabel('NEES Value | $bar{\epsilon}_x$','FontSize',14,'Interpreter','latex')
+title('NEES Test: $\bar{\epsilon}_x$ vs. $t$','FontSize',16,'Interpreter','latex')
+ylabel('NEES Value | $\bar{\epsilon}_x$','FontSize',14,'Interpreter','latex')
 xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
+legend('$\bar{\epsilon}_x$','$r_1$','$r_2$','FontSize',12,'Interpreter','latex')
 
 subplot(2,1,2)
 scatter(t,NIS_bar)
@@ -65,6 +65,7 @@ hold on
 plot(t,ones(1,length(t))*ry1,'r--','LineWidth',1.5)
 plot(t,ones(1,length(t))*ry2,'r--','LineWidth',1.5)
 hold off
-title('$NISS Test: $bar{\epsilon}_y$ vs. $t$','FontSize',16,'Interpreter','latex')
-ylabel('NIS Value | $bar{\epsilon}_x$','FontSize',14,'Interpreter','latex')
+title('NISS Test: $\bar{\epsilon}_y$ vs. $t$','FontSize',16,'Interpreter','latex')
+ylabel('NIS Value | $\bar{\epsilon}_y$','FontSize',14,'Interpreter','latex')
 xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
+legend('$\bar{\epsilon}_y$','$r_1$','$r_2$','FontSize',12,'Interpreter','latex')

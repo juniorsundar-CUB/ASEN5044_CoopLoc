@@ -12,8 +12,16 @@ NEES_all = zeros(N,steps+1);
 NIS_all = zeros(N,steps+1);
 
 % Tuning parameters
-Q = 0.001*ones(6,6);
-R = 30*eye(5);
+Q = 0.001*eye(6,6);
+Q(3,3) = 0.1;
+Q(6,6) = 0.1;
+Q(4,4) = 0.1;
+Q(1,1) = 10;
+Q(2,2) = 10;
+Q(5,5) = 10;
+R = 20*eye(5);
+% R(5,5) = 100;
+% R(4,4) = 50;
 
 for i=1:N
     disp(i)
