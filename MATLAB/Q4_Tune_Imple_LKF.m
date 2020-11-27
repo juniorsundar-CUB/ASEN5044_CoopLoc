@@ -55,9 +55,18 @@ hold on
 plot(t,ones(1,length(t))*rx1,'r--','LineWidth',1.5)
 plot(t,ones(1,length(t))*rx2,'r--','LineWidth',1.5)
 hold off
+title('NEES Test: $\bar{\epsilon}_x$ vs. $t$','FontSize',16,'Interpreter','latex')
+ylabel('NEES Value | $\bar{\epsilon}_x$','FontSize',14,'Interpreter','latex')
+xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
+legend('$\bar{\epsilon}_x$','$r_1$','$r_2$','FontSize',12,'Interpreter','latex')
+
 subplot(2,1,2)
 scatter(t,NIS_bar)
 hold on
 plot(t,ones(1,length(t))*ry1,'r--','LineWidth',1.5)
 plot(t,ones(1,length(t))*ry2,'r--','LineWidth',1.5)
 hold off
+title('NISS Test: $\bar{\epsilon}_y$ vs. $t$','FontSize',16,'Interpreter','latex')
+ylabel('NIS Value | $\bar{\epsilon}_y$','FontSize',14,'Interpreter','latex')
+xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
+legend('$\bar{\epsilon}_y$','$r_1$','$r_2$','FontSize',12,'Interpreter','latex')
