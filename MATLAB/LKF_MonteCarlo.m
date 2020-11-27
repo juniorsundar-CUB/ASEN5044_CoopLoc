@@ -1,4 +1,4 @@
-function [x_est,dx,P,S,e_x,e_y] = LKF_MonteCarlo(Q,R)
+function [x_truth,y_truth,x_est,y_est,dx,P,S,e_x,e_y] = LKF_MonteCarlo(Q,R,steps)
 load("cooplocalization_finalproj_KFdata.mat");
 
 x_nom = [10 0 pi/2 -60 0 -pi/2]';
@@ -9,7 +9,6 @@ Dt = 0.1;
 n = size(x_nom,1);
 P0 = eye(n).*0;
 
-steps = 1000;
 t = 0:Dt:steps*Dt;
 
 % Generate truth model outputs for nominal trajectories
@@ -43,6 +42,6 @@ end
 dx_init = x_pert;
 P_init = 999*eye(6);
 
-[x_est,dx,P,S,e_x,e_y] = LKF(dx_init,P_init,x_NL,y_NL,x_truth,y_truth,Fk,Hk,Ok,Q,R);
+[x_est,y_est,dx,P,S,e_x,e_y] = LKF(dx_init,P_init,x_NL,y_NL,x_truth,y_truth,Fk,Hk,Ok,Q,R);
 end
 
