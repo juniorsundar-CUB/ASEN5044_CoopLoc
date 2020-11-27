@@ -14,8 +14,8 @@ I = eye(n);
 e_y = zeros(p,steps+1);
 e_y(:,1) = y(:,1) - Hk(:,:,1)*dx(:,1);
 
-S(:,:,1) = Hk(:,:,1)*P(:,:,1)*Hk(:,:,1)' + R;
-K(:,:,1) = P(:,:,1)*Hk(:,:,1)'*inv(S(:,:,1));
+S(:,:,1) =
+K(:,:,1) =;
 
 for i=1:steps
     % Prediction Step

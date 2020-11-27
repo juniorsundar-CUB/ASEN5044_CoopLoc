@@ -13,8 +13,9 @@ x(:,1) = x0 + dx';
 for i = 2:steps+1
     
     % generate noisy state
-    wk = mvnrnd(zeros(1,n),Q);
-    [~,next_x] = ode45(@NL_DynModel, 0.0:Dt:2*Dt, x(:,i-1)', [], u', wk');
+    wk = chol(Q)*randn(n,1);
+%     wk = mvnrnd(zeros(1,n),Q);
+    [~,next_x] = ode45(@NL_DynModel, 0.0:Dt:2*Dt, x(:,i-1)', [], u', wk);
     %next_x = next_x(end,:)' + wk';
     
     % wrap angle to [-pi pi]
@@ -25,8 +26,9 @@ end
 
 for i = 2:steps+1   
     % generate noisy measurement
-    vk = mvnrnd(zeros(1,p),R);
-    y(:,i) = NL_MeasModel(x(:,i), vk');
+    vk = chol(R)*randn(p,1);
+%     vk = mvnrnd(zeros(1,p),R);
+    y(:,i) = NL_MeasModel(x(:,i), vk);
 end
 
 end
