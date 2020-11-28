@@ -36,6 +36,9 @@ for i = 2:steps+1
         vk = mvnrnd(zeros(1,p),R)';
     end
     y(:,i) = NL_MeasModel(x(:,i), vk);
+    % wrap angle to [-pi pi]
+    y(1,i) = wrapToPi(y(1,i));
+    y(3,i) = wrapToPi(y(3,i));
 end
 
 end
