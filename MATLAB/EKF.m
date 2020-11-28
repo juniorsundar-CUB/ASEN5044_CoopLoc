@@ -1,4 +1,4 @@
-function [x_est, y_est, P] = EKF(x0, P0, y, Q, R)
+function [x_est, y_est, P] = EKF(x0, P0, u, y, Q, R, Dt)
 
 n = size(x0, 1);
 p = size(R, 1);
@@ -14,8 +14,9 @@ P_p = P0;
 for i=1:steps
     
     % Prediction Step
-    [~, x_m] = ode45(@NL_DynModel, [0.0 deltaT], x_p', [], u');
-
+    wk = zeros(1,n);
+    [~, x_m] = ode45(@NL_DynModel, [0.0 Dt], x_p', [], u', wk);  
+    x_m(:,end) = 
     [A_t,B_t,C_t] = Linearize(x_m, u);
     [F, ~, H] = Discretize(A_t,B_t,C_t, Dt);
     
@@ -23,7 +24,8 @@ for i=1:steps
 
     x_m(3) = wrapToPi(x_m(3));
     x_m(6) = wrapToPi(x_m(6));
-    y_est(:,:,i) = NL_MeasModel(x_m);
+    vk = zeros(1,p);
+    y_est(:,:,i) = NL_MeasModel(x_m, vk);
     e_y = y(:,:,i) - y_est(:,:,i);
 
     % Correction Step
