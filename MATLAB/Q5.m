@@ -11,4 +11,9 @@ P0 = eye(n).*0.0003;
 steps = 1000;
 seed = 100;
 rng(seed);
-[x, y] = GenerateTruth(x_nom, u_nom, P0, Qtrue, Rtrue, Dt, steps, seed);
+[x, y, t] = GenerateTruth(x_nom, u_nom, P0, Qtrue, Rtrue, Dt, steps);
+fig1 = figure(1);
+PlotStates(fig1,t,x);
+
+fig2 = figure(2);
+PlotMeasurements(fig2,t,x);
