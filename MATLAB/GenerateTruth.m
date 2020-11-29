@@ -9,6 +9,8 @@ y = zeros(p,steps+1);
 % set initial conditions
 dx = mvnrnd(zeros(1,n),P0);
 x(:,1) = x0 + dx';
+x(3,1) = wrapToPi(x(3,1));
+x(6,1) = wrapToPi(x(6,1));
 
 for i = 2:steps+1
     
@@ -19,8 +21,6 @@ for i = 2:steps+1
         wk = mvnrnd(zeros(1,n),Q)';
     end
     [~,next_x] = ode45(@NL_DynModel, 0.0:Dt:2*Dt, x(:,i-1)', [], u', wk);
-    x_p = x(:,i-1);
-    [~,x_m] = ode45(@NL_DynModel, 0.0:Dt:2*Dt, x_p', [], u', zeros(1,n));
     
     % wrap angle to [-pi pi]
     next_x(3) = wrapToPi(next_x(3));
