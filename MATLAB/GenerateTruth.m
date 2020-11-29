@@ -1,4 +1,5 @@
 function [x, y] = GenerateTruth(x0, u, P0, Q, R, Dt, steps)
+opt = odeset('RelTol',1e-6,'AbsTol',1e-6);
 useChol = true;
 n = size(x0,1);
 p = size(R,1);
@@ -20,12 +21,12 @@ for i = 2:steps+1
     else
         wk = mvnrnd(zeros(1,n),Q)';
     end
-    [~,next_x] = ode45(@NL_DynModel, 0.0:Dt:2*Dt, x(:,i-1)', [], u', wk);
+    [~,next_x] = ode45(@NL_DynModel, [0 Dt], x(:,i-1)', opt, u', wk);
     
     % wrap angle to [-pi pi]
     next_x(3) = wrapToPi(next_x(3));
     next_x(6) = wrapToPi(next_x(6));
-    x(:,i) = next_x(2,:)';
+    x(:,i) = next_x(end,:)';
 end
 
 for i = 2:steps+1   
