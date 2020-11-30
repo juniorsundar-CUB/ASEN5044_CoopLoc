@@ -56,8 +56,6 @@ ry1 = (chi2inv(alpha/2,N*p))./N;
 ry2 = (chi2inv(1-alpha/2,N*p))./N;
 
 %% Plots
-PlotNis(hdl, NISsamps, H, Nsimruns)
-PlotNees(hdl, NEESsamps, Nsimruns, Fkf);
 
 figure(1)
 subplot(2,1,1)
