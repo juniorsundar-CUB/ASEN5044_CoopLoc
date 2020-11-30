@@ -1,15 +1,16 @@
-function [x_est, y_est, P] = EKF(x0, P0, u, y, Q, R, Dt)
+function [x_est, y_est, P, S] = EKF(x0, P0, u, y, Q, R, Dt)
 
 % set simulation tolerances for ode45
 opt = odeset('RelTol',1e-6,'AbsTol',1e-6);
 
-n = size(x0, 1);    % number of states
-p = size(R, 1);     % number of measurements
-steps = size(y,2);  % number of time steps
+n = size(x0, 1);            % number of states
+p = size(R, 1);             % number of measurements
+steps = size(y,2);          % number of time steps
 
 x_est = zeros(n, steps);    % state estimate vector
 y_est = zeros(p, steps);    % measurement estimate vector
 P = zeros(n, n, steps);     % coveriance
+S = zeros(p, p, steps);
 
 % start with initial estimate of total state
 % and covariance
@@ -54,8 +55,8 @@ for i=1:steps
     % Correction Step
     % calculate gain using linearized measurement
     % matrix H and covariance from Prediction Step
-    S = H*P_m*H' + R;
-    K = P_m*H'/S;
+    S_p = H*P_m*H' + R;
+    K = P_m*H'/S_p;
 
     % calculate posterior state estimate and covariance
     x_p = x_m + K*e_y;
@@ -67,6 +68,7 @@ for i=1:steps
     % for each time-step, save estimate and covariance
     x_est(:,i) = x_p;
     P(:,:,i) = P_p;
+    S(:,:,i) = 0.5*(S_p + S_p');
 end
 
 end

@@ -7,7 +7,7 @@ Dt = 0.1;
 steps = 1000;
 n = 6; p = 5; t = 0:Dt:steps*Dt;
 
-N = 100;        % No. of Monte Carlo runs
+N = 10;        % No. of Monte Carlo runs
 NEES_all = zeros(N,steps+1);
 NIS_all = zeros(N,steps+1);
 
@@ -56,6 +56,9 @@ ry1 = (chi2inv(alpha/2,N*p))./N;
 ry2 = (chi2inv(1-alpha/2,N*p))./N;
 
 %% Plots
+PlotNis(hdl, NISsamps, H, Nsimruns)
+PlotNees(hdl, NEESsamps, Nsimruns, Fkf);
+
 figure(1)
 subplot(2,1,1)
 scatter(t,NEES_bar)
