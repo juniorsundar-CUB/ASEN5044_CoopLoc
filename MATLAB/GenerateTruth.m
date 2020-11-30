@@ -29,7 +29,7 @@ for i = 2:steps+1
     x(:,i) = next_x(end,:)';
 end
 
-for i = 2:steps+1   
+for i = 1:steps+1   
     % generate noisy measurement
     if useChol==true
         vk = chol(R)*randn(p,1);

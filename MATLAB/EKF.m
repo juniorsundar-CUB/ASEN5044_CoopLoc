@@ -1,12 +1,15 @@
 function [x_est, y_est, P] = EKF(x0, P0, u, y, Q, R, Dt)
-opt = odeset('RelTol',1e-6,'AbsTol',1e-6);
-n = size(x0, 1);
-p = size(R, 1);
-steps = size(y,2);
 
-x_est = zeros(n, steps);
-y_est = zeros(p, steps);
-P = zeros(n, n, steps);
+% set simulation tolerances for ode45
+opt = odeset('RelTol',1e-6,'AbsTol',1e-6);
+
+n = size(x0, 1);    % number of states
+p = size(R, 1);     % number of measurements
+steps = size(y,2);  % number of time steps
+
+x_est = zeros(n, steps);    % state estimate vector
+y_est = zeros(p, steps);    % measurement estimate vector
+P = zeros(n, n, steps);     % coveriance
 
 % start with initial estimate of total state
 % and covariance
