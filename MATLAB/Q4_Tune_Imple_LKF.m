@@ -7,7 +7,7 @@ Dt = 0.1;
 steps = 1000;
 n = 6; p = 5; t = 0:Dt:steps*Dt;
 
-N = 10;        % No. of Monte Carlo runs
+N = 100;        % No. of Monte Carlo runs
 NEES_all = zeros(N,steps+1);
 NIS_all = zeros(N,steps+1);
 

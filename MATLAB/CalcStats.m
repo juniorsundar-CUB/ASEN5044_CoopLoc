@@ -10,7 +10,6 @@ NIS = zeros(1,steps);
 NEES_bar = zeros(1,steps);
 NIS_bar = zeros(1,steps);
 
-
 for run=1:runs
     for step=1:steps
         NEES(:,step) = EX(:,step, run)' * inv(P(:,:,step, run)) * EX(:,step, run);

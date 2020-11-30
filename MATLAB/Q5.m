@@ -13,7 +13,7 @@ rng(seed);
 Q = diag([.15, .15, 0.1, 0.01, 0.05, 0.1]);
 P0 = diag([1 1 0.025 1 1 0.025]);
 
-runs = 100;
+runs = 10;
 EX = zeros(n, steps+1, runs);
 p = 5;
 EY = zeros(p, steps+1, runs);
@@ -21,7 +21,10 @@ PS = zeros(n, n, steps+1, runs);
 SS = zeros(p, p, steps+1, runs);
 fig1 = figure(1);
 fig4 = figure(4);
+enablePlotDuring = false;
 for run = 1:runs
+    disp(['run #', num2str(run)]);
+    
     % generate truth for run
     [x, y] = GenerateTruth(x0, u0, P0, Qtrue, Rtrue, Dt, steps);
     t = (0:(length(x)-1))*Dt;
@@ -34,8 +37,10 @@ for run = 1:runs
     [x_est, y_est, P, S] = EKF(x0, P0, u0, y, Q, R, Dt);
     
     % Plot error during monte carlo runs
-    PlotStates(fig1,t,x - x_est, ['State Errors, Run #',num2str(run)], P);
-    PlotMeasurements(fig4,t,y - y_est,['Ground Truth Measurements, Run #',num2str(run)]);
+    if enablePlotDuring == true
+        PlotStates(fig1,t,x - x_est, ['State Errors, Run #',num2str(run)], P);
+        PlotMeasurements(fig4,t,y - y_est,['Ground Truth Measurements, Run #',num2str(run)]);
+    end
     
     % save run data from NEES/NIS tests
     EX(:, :, run) = x - x_est;
@@ -60,10 +65,10 @@ PlotMeasurements(fig2,t,x,'Ground Truth Measurements');
 
 %--------------------------------------------------------------------------
 % Plots for (b)
-fig4 = figure(4);
+fig5 = figure(5);
 alpha = 0.5;
 PlotNees(fig4, NEES_bar, runs, n, alpha);
 %--------------------------------------------------------------------------
 % Plots for (c)
-fig5 = figure(5);
+fig6 = figure(6);
 PlotNis(fig5, NIS_bar, runs, p, alpha);
