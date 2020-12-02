@@ -26,7 +26,7 @@ Q(4,4) = 1;
 Q(5,5) = 1;
 Q(6,6) = 3;
 % Q = 100*eye(6);
-% Q = Qtrue;
+
 R = Rtrue;
 
 for i=1:N
@@ -72,7 +72,7 @@ title('NEES Test: $\bar{\epsilon}_x$ vs. $t$','FontSize',16,'Interpreter','latex
 ylabel('NEES Value | $\bar{\epsilon}_x$','FontSize',14,'Interpreter','latex')
 xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
 legend('$\bar{\epsilon}_x$','$r_1$','$r_2$','FontSize',12,'Interpreter','latex')
-axis([min(t) max(t) rx1-1 rx2+1])
+% axis([min(t) max(t) rx1-1 rx2+1])
 
 subplot(2,1,2)
 scatter(t,NIS_bar)
