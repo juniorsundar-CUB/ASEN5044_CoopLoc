@@ -13,7 +13,7 @@ P0 = eye(n).*0;
 t = 0:Dt:steps*Dt;
 
 % Generate truth model outputs for nominal trajectories
-[x_truth, y_truth] = GenerateTruth(x_nom, u_nom, P0, Qtrue, Rtrue, Dt, steps);
+[x_truth, y_truth] = GenerateTruth(x_nom, u_nom, P0, Qtrue, Rtrue, Dt, steps, false);
 
 % Generate nominal trajectories
 [~,x_NL] = ode45(@(t,x) NL_DynModel(t,x,u_nom,zeros(6,1)),t,x_nom);
