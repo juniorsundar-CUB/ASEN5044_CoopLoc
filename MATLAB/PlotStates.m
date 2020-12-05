@@ -17,7 +17,7 @@ subplot(3,2,1)
 state = 1;
 plot(t,x(state,:))
 if displayError == true
-    hold all, plot(p(state,:),'b--'), plot(-p(state,:),'b--'), hold off
+    hold all, plot(p(state,:),'r--'), plot(-p(state,:),'r--'), hold off
 end
 ylabel('$\xi_g$ (m)','FontSize',ftSize,'Interpreter','latex')
 xlabel('Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -29,7 +29,7 @@ subplot(3,2,3)
 state = state + 1;
 plot(t,x(state,:))
 if displayError == true
-    hold all, plot(p(state,:),'b--'), plot(-p(state,:),'b--'), hold off
+    hold all, plot(p(state,:),'r--'), plot(-p(state,:),'r--'), hold off
 end
 ylabel('$\eta_g$ (m)','FontSize',ftSize,'Interpreter','latex')
 xlabel('Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -41,7 +41,7 @@ subplot(3,2,5)
 state = state + 1;
 plot(t,wrapToPi(x(state,:)))
 if displayError == true
-    hold all, plot(p(state,:),'b--'), plot(-p(state,:),'b--'), hold off
+    hold all, plot(p(state,:),'r--'), plot(-p(state,:),'r--'), hold off
 end
 ylabel('$\theta_g$ (rad)','FontSize',ftSize,'Interpreter','latex')
 xlabel('Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -53,7 +53,7 @@ subplot(3,2,2)
 state = state + 1;
 plot(t,x(state,:))
 if displayError == true
-    hold all, plot(p(state,:),'b--'), plot(-p(state,:),'b--'), hold off
+    hold all, plot(p(state,:),'r--'), plot(-p(state,:),'r--'), hold off
 end
 ylabel('$\xi_a$ (m)','FontSize',ftSize,'Interpreter','latex')
 xlabel('Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -65,7 +65,7 @@ subplot(3,2,4)
 state = state + 1;
 plot(t,x(state,:))
 if displayError == true
-    hold all, plot(p(state,:),'b--'), plot(-p(state,:),'b--'), hold off
+    hold all, plot(p(state,:),'r--'), plot(-p(state,:),'r--'), hold off
 end
 ylabel('$\eta_a$ (m)','FontSize',ftSize,'Interpreter','latex')
 xlabel('Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -77,7 +77,7 @@ subplot(3,2,6)
 state = state + 1;
 plot(t,wrapToPi(x(state,:)))
 if displayError == true
-    hold all, plot(p(state,:),'b--'), plot(-p(state,:),'b--'), hold off
+    hold all, plot(p(state,:),'r--'), plot(-p(state,:),'r--'), hold off
 end
 ylabel('$\theta_a$ (rad)','FontSize',ftSize,'Interpreter','latex')
 xlabel('Time(s)','FontSize',ftSize,'Interpreter','latex')
