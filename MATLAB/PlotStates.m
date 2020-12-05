@@ -11,77 +11,89 @@ else
 end
 
 figure(hdl)
+if isempty(hdl.Children)
+    tiledlayout(3,2);
+    ax1 = nexttile;
+    ax2 = nexttile;
+    ax3 = nexttile;
+    ax4 = nexttile;
+    ax5 = nexttile;
+    ax6 = nexttile;
+else
+    thdl = hdl.Children;
+    ax1 = thdl.Children(6,1);
+    ax2 = thdl.Children(5,1);
+    ax3 = thdl.Children(4,1);
+    ax4 = thdl.Children(3,1);
+    ax5 = thdl.Children(2,1);
+    ax6 = thdl.Children(1,1);
+end
+
+hold([ax1 ax2 ax3 ax4 ax5 ax6],'on');
+
 ftSize = 10;
 sgtitle(title,'FontSize',ftSize+2,'Interpreter','latex')
-subplot(3,2,1)
 state = 1;
-plot(t,x(state,:))
+
+plot(ax1, t,x(state,:))
 if displayError == true
-    hold all, plot(p(state,:),'r--'), plot(-p(state,:),'r--'), hold off
+    plot(ax1, p(state,:),'r--'), plot(ax1, -p(state,:),'r--')
 end
-ylabel('$\xi_g$ (m)','FontSize',ftSize,'Interpreter','latex')
-xlabel('Time(s)','FontSize',ftSize,'Interpreter','latex')
+ylabel(ax1, '$\xi_g$ (m)','FontSize',ftSize,'Interpreter','latex')
+xlabel(ax1, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
 axis([min(t) max(t) min(x(state,:)) ...
 max(x(state,:))])
-grid on
 
-subplot(3,2,3)
 state = state + 1;
-plot(t,x(state,:))
+plot(ax3, t,x(state,:))
 if displayError == true
-    hold all, plot(p(state,:),'r--'), plot(-p(state,:),'r--'), hold off
+    plot(ax3, p(state,:),'r--'), plot(ax3, -p(state,:),'r--')
 end
-ylabel('$\eta_g$ (m)','FontSize',ftSize,'Interpreter','latex')
-xlabel('Time(s)','FontSize',ftSize,'Interpreter','latex')
+ylabel(ax3, '$\eta_g$ (m)','FontSize',ftSize,'Interpreter','latex')
+xlabel(ax3, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
 axis([min(t) max(t) min(x(state,:)) ...
 max(x(state,:))])
-grid on
 
-subplot(3,2,5)
 state = state + 1;
-plot(t,wrapToPi(x(state,:)))
+plot(ax5, t,wrapToPi(x(state,:)))
 if displayError == true
-    hold all, plot(p(state,:),'r--'), plot(-p(state,:),'r--'), hold off
+    plot(ax5, p(state,:),'r--'), plot(ax5, -p(state,:),'r--')
 end
-ylabel('$\theta_g$ (rad)','FontSize',ftSize,'Interpreter','latex')
-xlabel('Time(s)','FontSize',ftSize,'Interpreter','latex')
+ylabel(ax5, '$\theta_g$ (rad)','FontSize',ftSize,'Interpreter','latex')
+xlabel(ax5, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
 axis([min(t) max(t) min(wrapToPi(x(state,:))) ...
 max(wrapToPi(x(state,:)))])
-grid on
 
-subplot(3,2,2)
 state = state + 1;
-plot(t,x(state,:))
+plot(ax2, t,x(state,:))
 if displayError == true
-    hold all, plot(p(state,:),'r--'), plot(-p(state,:),'r--'), hold off
+    plot(ax2, p(state,:),'r--'), plot(ax2, -p(state,:),'r--')
 end
-ylabel('$\xi_a$ (m)','FontSize',ftSize,'Interpreter','latex')
-xlabel('Time(s)','FontSize',ftSize,'Interpreter','latex')
+ylabel(ax2, '$\xi_a$ (m)','FontSize',ftSize,'Interpreter','latex')
+xlabel(ax2, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
 axis([min(t) max(t) min(x(state,:)) ...
 max(x(state,:))])
-grid on
 
-subplot(3,2,4)
 state = state + 1;
-plot(t,x(state,:))
+plot(ax4, t,x(state,:))
 if displayError == true
-    hold all, plot(p(state,:),'r--'), plot(-p(state,:),'r--'), hold off
+    plot(ax4, p(state,:),'r--'), plot(ax4, -p(state,:),'r--')
 end
-ylabel('$\eta_a$ (m)','FontSize',ftSize,'Interpreter','latex')
-xlabel('Time(s)','FontSize',ftSize,'Interpreter','latex')
+ylabel(ax4, '$\eta_a$ (m)','FontSize',ftSize,'Interpreter','latex')
+xlabel(ax4, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
 axis([min(t) max(t) min(x(state,:)) ...
 max(x(state,:))])
-grid on
 
-subplot(3,2,6)
 state = state + 1;
-plot(t,wrapToPi(x(state,:)))
+plot(ax6, t,wrapToPi(x(state,:)))
 if displayError == true
-    hold all, plot(p(state,:),'r--'), plot(-p(state,:),'r--'), hold off
+    plot(ax6, p(state,:),'r--'), plot(ax6, -p(state,:),'r--')
 end
-ylabel('$\theta_a$ (rad)','FontSize',ftSize,'Interpreter','latex')
-xlabel('Time(s)','FontSize',ftSize,'Interpreter','latex')
+ylabel(ax6, '$\theta_a$ (rad)','FontSize',ftSize,'Interpreter','latex')
+xlabel(ax6, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
 axis([min(t) max(t) min(wrapToPi(x(state,:))) ...
 max(wrapToPi(x(state,:)))])
-grid on
+
+grid([ax1 ax2 ax3 ax4 ax5 ax6],'on');
+hold([ax1 ax2 ax3 ax4 ax5 ax6],'off');
 end

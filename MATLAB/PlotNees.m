@@ -15,4 +15,5 @@ ylabel('NEES statistic, $\bar{\epsilon}_x$','FontSize',14,'Interpreter','latex')
 xlabel('time step, k','FontSize',14)
 title('NEES Estimation Results','FontSize',14)
 legend('$\bar{\epsilon}_x$','$r_1$','$r_2$','FontSize',12,'Interpreter','latex')
+grid on;
 end

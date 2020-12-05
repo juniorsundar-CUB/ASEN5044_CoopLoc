@@ -26,17 +26,18 @@ EY_ekf = EY_lkf;
 PS_ekf = PS_lkf;
 SS_ekf = SS_lkf;
 
-fig1 = figure(1);
-fig2 = figure(2);
-fig3 = figure(3);
-fig4 = figure(4);
-fig5 = figure(5);
-fig6 = figure(6);
+fig1 = figure;
+fig2 = figure;
+fig3 = figure;
+fig4 = figure;
+fig5 = figure;
+fig6 = figure;
 
 for run = 1:runs
     disp(['run #', num2str(run)]);
     
-    % generate truth for run
+    %----------------------------------------------------------------------
+    % generate truth for Monte Carlo run
     [x, y] = GenerateTruth(x0, u0, P0, Qtrue, Rtrue, Dt, steps, false);
     t = (0:(length(x)-1))*Dt;
 
@@ -44,6 +45,7 @@ for run = 1:runs
     % specifications of sensors
     R = Rtrue;
     
+    %----------------------------------------------------------------------
     %----------------------------------------------------------------------
     % LKF
     
@@ -89,14 +91,14 @@ for run = 1:runs
     PS_ekf(:, :, :, run) = P_ekf;
     SS_ekf(:, :, :, run) = S_ekf;
     %----------------------------------------------------------------------
-    
+    %----------------------------------------------------------------------
     % Plot error during monte carlo runs
-    PlotStates(fig1,t,x,'Ground Truth States');
-    PlotMeasurements(fig2,t,y,'Ground Truth Measurements');
-    PlotStates(fig3,t,ex_lkf, ['LKF State Errors, Run ',num2str(run)], P_lkf);
-    PlotMeasurements(fig4,t,ey_lkf,['LKF Ground Truth Measurement Errors, Run ',num2str(run)], S_lkf);
-    PlotStates(fig5,t,ex_ekf, ['EKF State Errors, Run ',num2str(run)], P_ekf);
-    PlotMeasurements(fig6,t,ey_ekf,['EKF Ground Truth Measurement Errors, Run ',num2str(run)], S_ekf);
+    PlotStates(fig1,t,x,'Ground Truth States, All Runs');
+    PlotMeasurements(fig2,t,y,'Ground Truth Measurements, All Runs');
+    PlotStates(fig3,t,ex_lkf, ['LKF State Errors, Runs ',num2str(run)]);
+    PlotMeasurements(fig4,t,ey_lkf,['LKF Ground Truth Measurement Errors, Runs ',num2str(run)]);
+    PlotStates(fig5,t,ex_ekf, ['EKF State Errors, Runs ',num2str(run)]);
+    PlotMeasurements(fig6,t,ey_ekf,['EKF Ground Truth Measurement Errors, Runs ',num2str(run)]);
 end
 
 %% Calculate NEES and NIS statistics 
@@ -104,8 +106,8 @@ end
 [NEES_ekf, NIS_ekf] = CalcStats(EX_ekf, EY_ekf, PS_ekf, SS_ekf);
 
 %--------------------------------------------------------------------------
-% Plots for (b)
-fig7 = figure(7);
+% NEES Plot
+fig7 = figure;
 alpha = 0.05;
 PlotNees(fig7, NEES_lkf, runs, n, alpha);
 hold all;
@@ -114,11 +116,39 @@ hold off;
 legend('LKF $\bar{\epsilon}_x$','$r_1$','$r_2$',...
     'EKF $\bar{\epsilon}_x$','FontSize',12,'Interpreter','latex')
 %--------------------------------------------------------------------------
-% Plots for (c)
-fig8 = figure(8);
+% NIS Plot
+fig8 = figure;
 PlotNis(fig8, NIS_lkf, runs, p, alpha);
 hold all;
 PlotNis(fig8, NIS_ekf, runs, p, alpha);
 hold off;
 legend('LKF $\bar{\epsilon}_y$','$r_1$','$r_2$',...
     'EKF $\bar{\epsilon}_y$','FontSize',12,'Interpreter','latex')
+
+%--------------------------------------------------------------------------
+%% Comparison Plots
+fig9 = figure;
+fig10 = figure;
+fig11 = figure;
+fig12 = figure;
+x(3,:) = wrapToPi(x(3,:));
+x(6,:) = wrapToPi(x(6,:));
+PlotStates(fig9,t,x,'Ground Truth States');
+y(3,:) = wrapToPi(y(3,:));
+y(1,:) = wrapToPi(y(1,:));
+PlotMeasurements(fig10,t,y,'Ground Truth Measurements');
+PlotStates(fig9,t,x_est_lkf,'Ground Truth States');
+y_est_lkf(3,:) = wrapToPi(y_est_lkf(3,:));
+y_est_lkf(1,:) = wrapToPi(y_est_lkf(1,:));
+PlotMeasurements(fig10,t,y_est_lkf,'Ground Truth Measurements');
+PlotStates(fig9,t,x_est_ekf,'Ground Truth States');
+legend('Truth','LKF','EKF');
+PlotMeasurements(fig10,t,y_est_ekf,'Ground Truth Measurements');
+legend('Truth','LKF','EKF');
+
+PlotStates(fig11,t,ex_lkf, ['State Errors, Run ',num2str(run)]);
+PlotMeasurements(fig12,t,ey_lkf,['Ground Truth Measurement Errors, Run ',num2str(run)]);
+PlotStates(fig11,t,ex_ekf, ['State Errors, Run ',num2str(run)]);
+legend('LKF','EKF');
+PlotMeasurements(fig12,t,ey_ekf,['Ground Truth Measurement Errors, Run ',num2str(run)]);
+legend('LKF','EKF');

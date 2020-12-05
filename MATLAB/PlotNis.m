@@ -14,5 +14,6 @@ ylabel('NIS statistic, $\bar{\epsilon}_y$','FontSize',14,'Interpreter','latex')
 xlabel('time step, k','FontSize',14)
 title('NIS Estimation Results','FontSize',14)
 legend('$\bar{\epsilon}_y$','$r_1$','$r_2$','FontSize',12,'Interpreter','latex')
+grid on;
 end
 
