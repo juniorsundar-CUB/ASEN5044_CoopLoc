@@ -8,7 +8,7 @@ r1x = chi2inv(alpha/2, Nnx )./ Nsimruns;
 r2x = chi2inv(1-alpha/2, Nnx )./ Nsimruns;
 
 figure(hdl)
-plot(epsNEESbar,'bo','MarkerSize',6),hold on
+plot(epsNEESbar,'o','MarkerSize',6),hold on
 plot(r1x*ones(size(epsNEESbar)),'r--')
 plot(r2x*ones(size(epsNEESbar)),'r--')
 ylabel('NEES statistic, $\bar{\epsilon}_x$','FontSize',14,'Interpreter','latex')

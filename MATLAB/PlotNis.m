@@ -7,7 +7,7 @@ Nny = Nsimruns*p;
 r1y = chi2inv(alpha/2, Nny )./ Nsimruns;
 r2y = chi2inv(1-alpha/2, Nny )./ Nsimruns;
 
-plot(epsNISbar,'bo','MarkerSize',6),hold on
+plot(epsNISbar,'o','MarkerSize',6),hold on
 plot(r1y*ones(size(epsNISbar)),'r--')
 plot(r2y*ones(size(epsNISbar)),'r--')
 ylabel('NIS statistic, $\bar{\epsilon}_y$','FontSize',14,'Interpreter','latex')
