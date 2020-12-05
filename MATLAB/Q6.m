@@ -10,7 +10,7 @@ if runMonteCarlo == true
     x0 = [10 0 pi/2 -60 0 -pi/2]';
     u0 = [2 -pi/18 12 pi/25]';
     steps = 1000;
-    runs = 5;
+    runs = 10;
 
     Q_lkf = diag([0.0001 0.0001 0.01 0.1 0.1 0.01]);
     Q_ekf = diag([.0015, .0015, 0.01, 0.001, 0.005, 0.01]);
@@ -40,11 +40,14 @@ EY_ekf = EY_lkf;
 PS_ekf = PS_lkf;
 SS_ekf = SS_lkf;
 
-fig1 = figure;
+if runMonteCarlo == true
+    fig1 = figure;
+    fig3 = figure;
+    fig5 = figure;
+end
+
 fig2 = figure;
-fig3 = figure;
 fig4 = figure;
-fig5 = figure;
 fig6 = figure;
 
 for run = 1:runs
@@ -54,6 +57,7 @@ for run = 1:runs
     if runMonteCarlo == true
         [x, y] = GenerateTruth(x0, u0, P0, Qtrue, Rtrue, Dt, steps, false);
         t = (0:(length(x)-1))*Dt;
+        unwrapped_y = y;
     else
         y = ydata(:,2:end);
         unwrapped_y = y;
@@ -65,7 +69,9 @@ for run = 1:runs
         steps = size(y,2) - 1;
     end
     if overlayAllRuns == true
-        PlotStates(fig1,t,x,'Ground Truth States, All Runs');
+        if runMonteCarlo == true
+            PlotStates(fig1,t,x,'Ground Truth States, All Runs');
+        end
         PlotMeasurements(fig2,t,y,'Ground Truth Measurements, All Runs');
     end
 
@@ -122,19 +128,23 @@ for run = 1:runs
     %----------------------------------------------------------------------
     % Plot error during monte carlo runs
     if overlayAllRuns == true
-        PlotStates(fig3,t,ex_lkf, ['LKF State Errors, Runs ',num2str(run)]);
+        if runMonteCarlo == true
+            PlotStates(fig3,t,ex_lkf, ['LKF State Errors, Runs ',num2str(run)]);
+            PlotStates(fig5,t,ex_ekf, ['EKF State Errors, Runs ',num2str(run)]);
+        end
         PlotMeasurements(fig4,t,ey_lkf,['LKF Ground Truth Measurement Errors, Runs ',num2str(run)]);
-        PlotStates(fig5,t,ex_ekf, ['EKF State Errors, Runs ',num2str(run)]);
         PlotMeasurements(fig6,t,ey_ekf,['EKF Ground Truth Measurement Errors, Runs ',num2str(run)]);
     end
 end
 
 if overlayAllRuns == false
-    PlotStates(fig1,t,x,'Ground Truth States, All Runs');
+    if runMonteCarlo == true
+        PlotStates(fig1,t,x,'Ground Truth States, All Runs');
+        PlotStates(fig3,t,ex_lkf, ['LKF State Errors, Runs ',num2str(run)]);
+        PlotStates(fig5,t,ex_ekf, ['EKF State Errors, Runs ',num2str(run)]);
+    end
     PlotMeasurements(fig2,t,y,'Ground Truth Measurements, All Runs');
-    PlotStates(fig3,t,ex_lkf, ['LKF State Errors, Runs ',num2str(run)]);
     PlotMeasurements(fig4,t,ey_lkf,['LKF Ground Truth Measurement Errors, Runs ',num2str(run)]);
-    PlotStates(fig5,t,ex_ekf, ['EKF State Errors, Runs ',num2str(run)]);
     PlotMeasurements(fig6,t,ey_ekf,['EKF Ground Truth Measurement Errors, Runs ',num2str(run)]);
 end
 
@@ -144,14 +154,16 @@ end
 
 %--------------------------------------------------------------------------
 % NEES Plot
-fig7 = figure;
 alpha = 0.05;
-PlotNees(fig7, NEES_lkf, runs, n, alpha);
-hold all;
-PlotNees(fig7, NEES_ekf, runs, n, alpha);
-hold off;
-legend('LKF $\bar{\epsilon}_x$','$r_1$','$r_2$',...
-    'EKF $\bar{\epsilon}_x$','FontSize',12,'Interpreter','latex')
+if runMonteCarlo == true
+    fig7 = figure;
+    PlotNees(fig7, NEES_lkf, runs, n, alpha);
+    hold all;
+    PlotNees(fig7, NEES_ekf, runs, n, alpha);
+    hold off;
+    legend('LKF $\bar{\epsilon}_x$','$r_1$','$r_2$',...
+        'EKF $\bar{\epsilon}_x$','FontSize',12,'Interpreter','latex')
+end
 %--------------------------------------------------------------------------
 % NIS Plot
 fig8 = figure;
@@ -164,28 +176,37 @@ legend('LKF $\bar{\epsilon}_y$','$r_1$','$r_2$',...
 
 %--------------------------------------------------------------------------
 %% Comparison Plots
-fig9 = figure;
+if runMonteCarlo == true
+    fig9 = figure;
+    fig11 = figure;
+end
+
 fig10 = figure;
-fig11 = figure;
 fig12 = figure;
-x(3,:) = wrapToPi(x(3,:));
-x(6,:) = wrapToPi(x(6,:));
-PlotStates(fig9,t,x,'Ground Truth States');
+
+if runMonteCarlo == true
+    x(3,:) = wrapToPi(x(3,:));
+    x(6,:) = wrapToPi(x(6,:));
+    PlotStates(fig9,t,x,'Ground Truth States');
+    PlotStates(fig9,t,x_est_ekf,'Ground Truth States');
+    PlotStates(fig9,t,x_est_lkf,'Ground Truth States');
+    legend('Truth','LKF','EKF');
+end
+
 y(3,:) = wrapToPi(y(3,:));
 y(1,:) = wrapToPi(y(1,:));
 PlotMeasurements(fig10,t,y,'Ground Truth Measurements');
-PlotStates(fig9,t,x_est_lkf,'Ground Truth States');
 y_est_lkf(3,:) = wrapToPi(y_est_lkf(3,:));
 y_est_lkf(1,:) = wrapToPi(y_est_lkf(1,:));
 PlotMeasurements(fig10,t,y_est_lkf,'Ground Truth Measurements');
-PlotStates(fig9,t,x_est_ekf,'Ground Truth States');
-legend('Truth','LKF','EKF');
 PlotMeasurements(fig10,t,y_est_ekf,'Ground Truth Measurements');
 legend('Truth','LKF','EKF');
 
-PlotStates(fig11,t,ex_lkf, ['State Errors, Run ',num2str(run)]);
+if runMonteCarlo == true
+    PlotStates(fig11,t,ex_lkf, ['State Errors, Run ',num2str(run)]);
+    PlotStates(fig11,t,ex_ekf, ['State Errors, Run ',num2str(run)]);
+    legend('LKF','EKF');
+end
 PlotMeasurements(fig12,t,ey_lkf,['Ground Truth Measurement Errors, Run ',num2str(run)]);
-PlotStates(fig11,t,ex_ekf, ['State Errors, Run ',num2str(run)]);
-legend('LKF','EKF');
 PlotMeasurements(fig12,t,ey_ekf,['Ground Truth Measurement Errors, Run ',num2str(run)]);
 legend('LKF','EKF');
