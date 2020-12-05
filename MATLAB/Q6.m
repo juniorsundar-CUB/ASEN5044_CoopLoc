@@ -2,7 +2,10 @@
 close all, clearvars, clc
 load("cooplocalization_finalproj_KFdata.mat");
 
-runMonteCarlo = false;
+useUnwrappedY = true;       % wrap Y for LKF
+runMonteCarlo = false;      % run MC or use Mat data
+overlayAllRuns = true;      % plot all runs on top of each other
+
 if runMonteCarlo == true
     x0 = [10 0 pi/2 -60 0 -pi/2]';
     u0 = [2 -pi/18 12 pi/25]';
@@ -43,7 +46,7 @@ fig3 = figure;
 fig4 = figure;
 fig5 = figure;
 fig6 = figure;
-overlayAllRuns = true;
+
 for run = 1:runs
     disp(['run #', num2str(run)]);
     %----------------------------------------------------------------------
@@ -53,6 +56,9 @@ for run = 1:runs
         t = (0:(length(x)-1))*Dt;
     else
         y = ydata(:,2:end);
+        unwrapped_y = y;
+        unwrapped_y(1,:) = unwrap(y(1,:));
+        unwrapped_y(3,:) =  unwrap(y(3,:));
         x = ones(size(x0,1),size(y,2));
         x(:,1) = x0;
         t = tvec(:,2:end);
@@ -78,7 +84,7 @@ for run = 1:runs
     P_init = eye(n);
     
     % Run filter for all time-steps of run #k
-    [x_est_lkf,y_est_lkf,~,P_lkf,S_lkf,~,~] = LKF(dx_init, P_init, x_nom, y_nom, x, y, ...
+    [x_est_lkf,y_est_lkf,~,P_lkf,S_lkf,~,~] = LKF(dx_init, P_init, x_nom, y_nom, x, unwrapped_y, ...
         Fk, Hk, Ok, Q_lkf, R);
     
     % wrap angle diff too!!
