@@ -14,6 +14,7 @@ NIS_all = zeros(N,steps+1);
 % Tuning parameters
 Q = diag([0.0001 0.0001 0.01 0.1 0.1 0.01]);
 R = Rtrue;
+
 for i=1:N
     disp(i)
     NEES = zeros(1,steps+1);
@@ -72,7 +73,7 @@ axis([min(t) max(t) ry1-1 ry2+1])
 
 %__________________________________________________________________________
 
-figure(2)
+figure(3)
 sgtitle('\bf{States Dynamics of Typical MC Run + LKF Estimate}','FontSize',18,'Interpreter','latex')
 subplot(3,2,1)
 plot(t,x_truth(1,:),'LineWidth',1.5)
@@ -138,7 +139,7 @@ grid on
 legend({'$x_{truth}$','$x_{estimate}$'},'FontSize',12,'Interpreter','latex')
 
 %__________________________________________________________________________
-figure(3)
+figure(2)
 sgtitle('\bf{State Estimate Errors}','FontSize',18,'Interpreter','latex')
 subplot(3,2,1)
 plot(t,e_x(1,:),'LineWidth',1.5)
@@ -225,63 +226,6 @@ xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
 grid on
 legend({'$e_{x}$','$\pm2\sigma$'},'FontSize',12,'Interpreter','latex')
 axis([min(t) max(t) -1 1])
-%__________________________________________________________________________
-
-figure(4)
-sgtitle('\bf{Measurement Dynamics of Typical MC Run + LKF Estimate}','FontSize',18,'Interpreter','latex')
-subplot(3,2,1)
-plot(t,wrapToPi(y_truth(1,:)),'LineWidth',1.5)
-hold on
-plot(t,wrapToPi(y_est(1,:)),'r--','LineWidth',1.5)
-hold off
-title('$\gamma_{ag}$ vs. $t$','FontSize',16,'Interpreter','latex')
-ylabel('$\gamma_{ag}$ (rad)','FontSize',14,'Interpreter','latex')
-xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
-grid on
-% axis([min(t) max(t) 0 20])
-
-subplot(3,2,2)
-plot(t,y_truth(2,:),'LineWidth',1.5)
-hold on
-plot(t,y_est(2,:),'r--','LineWidth',1.5)
-hold off
-title('$\rho_{ga}$ vs. $t$','FontSize',16,'Interpreter','latex')
-ylabel('$\rho_{ga}$ (m)','FontSize',14,'Interpreter','latex')
-xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
-grid on
-% axis([min(t) max(t) -10 10])
-
-subplot(3,2,3)
-plot(t,wrapToPi(y_truth(3,:)),'LineWidth',1.5)
-hold on
-plot(t,wrapToPi(y_est(3,:)),'r--','LineWidth',1.5)
-hold off
-title('$\gamma_{ga}$ vs. $t$','FontSize',16,'Interpreter','latex')
-ylabel('$\gamma_{ga}$ (rad)','FontSize',14,'Interpreter','latex')
-xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
-grid on
-
-subplot(3,2,4)
-plot(t,y_truth(4,:),'LineWidth',1.5)
-hold on
-plot(t,y_est(4,:),'r--','LineWidth',1.5)
-hold off
-title('$\xi_a$ vs. $t$','FontSize',16,'Interpreter','latex')
-ylabel('$\xi_a$ (m)','FontSize',14,'Interpreter','latex')
-xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
-grid on
-
-subplot(3,2,[5,6])
-plot(t,y_truth(5,:),'LineWidth',1.5)
-hold on
-plot(t,y_est(5,:),'r--','LineWidth',1.5)
-hold off
-title('$\eta_a$ vs. $t$','FontSize',16,'Interpreter','latex')
-ylabel('$\eta_a$ (m)','FontSize',14,'Interpreter','latex')
-xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
-grid on
-
-legend({'$y_{truth}$','$y_{estimate}$'},'FontSize',12,'Interpreter','latex')
 
 %__________________________________________________________________________
 
@@ -296,13 +240,13 @@ hold on
 plot(t,C(1,:),'r--','LineWidth',1.5)
 plot(t,C(2,:),'r--','LineWidth',1.5)
 hold off
-title('$e_{\gamma_{ag}}$ vs. $t$','FontSize',16,'Interpreter','latex')
-ylabel('$e_{\gamma_{ag}}$ (rad)','FontSize',14,'Interpreter','latex')
+title('$e_{\xi_g}$ vs. $t$','FontSize',16,'Interpreter','latex')
+ylabel('$e_{\xi_g}$ (m)','FontSize',14,'Interpreter','latex')
 xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
 grid on
 % axis([min(t) max(t) -20 20])
 
-subplot(3,2,2)
+subplot(3,2,3)
 plot(t,e_y(2,:),'LineWidth',1.5)
 C(1,:) = 2*(sqrt(S(2,2,:)));
 C(2,:) = -2*(sqrt(S(2,2,:)));
@@ -310,13 +254,13 @@ hold on
 plot(t,C(1,:),'r--','LineWidth',1.5)
 plot(t,C(2,:),'r--','LineWidth',1.5)
 hold off
-title('$e_{\rho_{ga}}$ vs. $t$','FontSize',16,'Interpreter','latex')
-ylabel('$e_{\rho_{ga}}$ (m)','FontSize',14,'Interpreter','latex')
+title('$e_{\eta_g}$ vs. $t$','FontSize',16,'Interpreter','latex')
+ylabel('$e_{\eta_g}$ (m)','FontSize',14,'Interpreter','latex')
 xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
 grid on
 % axis([min(t) max(t) -20 20])
 
-subplot(3,2,3)
+subplot(3,2,5)
 plot(t,e_y(3,:),'LineWidth',1.5)
 C(1,:) = 2*(sqrt(S(3,3,:)));
 C(2,:) = -2*(sqrt(S(3,3,:)));
@@ -324,13 +268,13 @@ hold on
 plot(t,C(1,:),'r--','LineWidth',1.5)
 plot(t,C(2,:),'r--','LineWidth',1.5)
 hold off
-title('$e_{\gamma_{ga}}$ vs. $t$','FontSize',16,'Interpreter','latex')
-ylabel('$e_{\gamma_{ga}}$ (rad)','FontSize',14,'Interpreter','latex')
+title('$e_{\theta_g}$ vs. $t$','FontSize',16,'Interpreter','latex')
+ylabel('$e_{\theta_g}$ (rad)','FontSize',14,'Interpreter','latex')
 xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
 grid on
 % axis([min(t) max(t) -1 1])
 
-subplot(3,2,4)
+subplot(3,2,2)
 plot(t,e_y(4,:),'LineWidth',1.5)
 C(1,:) = 2*(sqrt(S(4,4,:)));
 C(2,:) = -2*(sqrt(S(4,4,:)));
@@ -344,7 +288,7 @@ xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
 grid on
 % axis([min(t) max(t) -10 10])
 
-subplot(3,2,[5,6])
+subplot(3,2,4)
 plot(t,e_y(5,:),'LineWidth',1.5)
 C(1,:) = 2*(sqrt(S(5,5,:)));
 C(2,:) = -2*(sqrt(S(5,5,:)));
@@ -357,4 +301,3 @@ ylabel('$e_{\eta_a}$ (m)','FontSize',14,'Interpreter','latex')
 xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
 grid on
 % axis([min(t) max(t) -10 10])
-legend({'$e_{y}$','$\pm2\sigma$'},'FontSize',12,'Interpreter','latex')

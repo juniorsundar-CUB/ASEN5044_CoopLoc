@@ -10,10 +10,9 @@ y = zeros(p,steps+1);
 % set initial conditions
 dx = mvnrnd(zeros(1,n),P0);
 x(:,1) = x0 + dx';
-% if wrapOn == true
 x(3,1) = wrapToPi(x(3,1));
 x(6,1) = wrapToPi(x(6,1));
-% end
+
 for i = 2:steps+1
     
     % generate noisy state

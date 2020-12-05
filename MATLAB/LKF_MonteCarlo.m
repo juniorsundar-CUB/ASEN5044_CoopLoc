@@ -3,7 +3,6 @@ load("cooplocalization_finalproj_KFdata.mat");
 
 x_nom = [10 0 pi/2 -60 0 -pi/2]';
 u_nom = [2 -pi/18 12 pi/25]';
-% x_pert = -1 + (1--1).*rand(6,1);
 x_pert = [0 1 0 0 0 0.1]';
 Dt = 0.1;
 
@@ -24,13 +23,7 @@ for i=1:length(t)
 end
 
 % Generate DT matrices along nominal trajectory
-% x_nominal = [x_NL(1,:); x_NL(2,:);
-%              wrapToPi(x_NL(3,:)); x_NL(4,:);
-%              x_NL(5,:); wrapToPi(x_NL(6,:))];
 x_nominal = x_NL;
-% y_nominal = [wrapToPi(y_NL(1,:)); y_NL(2,:);
-%              wrapToPi(y_NL(3,:)); y_NL(4,:);
-%              y_NL(5,:)];
 y_nominal = y_NL;
          
 Fk = zeros(6,6,length(t));
@@ -44,9 +37,8 @@ for i=1:length(t)
 end
 
 % Run LKF on Data
-dx_init = x_nominal(:,1)-x_truth(:,1);
+dx_init = x_truth(:,1)-x_nominal(:,1);
 P_init = eye(6);
 
 [x_est,y_est,dx,P,S,e_x,e_y] = LKF(dx_init,P_init,x_nominal,y_nominal,x_truth,y_truth,Fk,Hk,Ok,Q,R);
 end
-
