@@ -12,21 +12,8 @@ NEES_all = zeros(N,steps+1);
 NIS_all = zeros(N,steps+1);
 
 % Tuning parameters
-% Q(1,1) = 0.5;
-% Q(2,2) = 0.5;
-% Q(3,3) = 5;
-% Q(4,4) = 5;
-% Q(5,5) = 5;
-% Q(6,6) = 5;
-
-Q(1,1) = 1;
-Q(2,2) = 1;
-Q(3,3) = 3;
-Q(4,4) = 1;
-Q(5,5) = 1;
-Q(6,6) = 3;
-% Q = 100*eye(6);
-
+Q = diag([1 1 3 1 1 3]);
+% Q = diag([.0015, .0015, 0.01, 0.001, 0.005, 0.01]);
 R = Rtrue;
 
 for i=1:N
@@ -60,7 +47,6 @@ ry1 = (chi2inv(alpha/2,N*p))./N;
 ry2 = (chi2inv(1-alpha/2,N*p))./N;
 
 %% Plots
-
 figure(1)
 subplot(2,1,1)
 scatter(t,NEES_bar)

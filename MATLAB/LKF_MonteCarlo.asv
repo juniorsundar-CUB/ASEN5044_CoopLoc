@@ -44,7 +44,7 @@ for i=1:length(t)
 end
 
 % Run LKF on Data
-dx_init = x_nominal(:,1)-x_truth(:,1);
+dx_init = x_NL();
 P_init = eye(6);
 
 [x_est,y_est,dx,P,S,e_x,e_y] = LKF(dx_init,P_init,x_nominal,y_nominal,x_truth,y_truth,Fk,Hk,Ok,Q,R);

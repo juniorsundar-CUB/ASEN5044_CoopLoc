@@ -8,8 +8,10 @@ dx = zeros(n,steps+1);
 P = zeros(n,n,steps+1);
 S = zeros(p,p,steps+1);
 K = zeros(n,p,steps+1);
+
 dx(:,1) = dx_init;
 dy = y-y_nom;
+
 P(:,:,1) = P_init;
 I = eye(n);
 e_y = zeros(p,steps+1);
