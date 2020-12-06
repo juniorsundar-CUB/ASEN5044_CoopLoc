@@ -13,6 +13,7 @@ NIS_all = zeros(N,steps+1);
 
 % Tuning parameters
 Q = diag([0.0001 0.0001 0.01 0.1 0.1 0.01]);
+
 R = Rtrue;
 for i=1:N
     disp(i)
