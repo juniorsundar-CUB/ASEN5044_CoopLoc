@@ -15,18 +15,18 @@ Q = [	.000001     0           1e-6	0       0       0;
         1e-6        1e-6        .001	0       0       0;
         0           0           0     	.00075  0       1e-6;
         0           0           0     	0       .00075  1e-6;
-        0           0           0     	1e-6	1e-6	.008]./10;
+        0           0           0     	1e-6	1e-6	.008]./18;
     
 P0 = diag([(1/2)^2 (1/2)^2 (0.25/2)^2 (2.5/2)^2 (2.5/2)^2 (0.25/2)^2]);
 
-runs = 80;
+runs = 100;
 EX = zeros(n, steps+1, runs);
 p = 5;
 EY = zeros(p, steps+1, runs);
 PS = zeros(n, n, steps+1, runs);
 SS = zeros(p, p, steps+1, runs);
 fig1 = figure;
-enablePlotDuring = true;
+enablePlotDuring = false;
 for run = 1:runs
     disp(['run #', num2str(run)]);
     
