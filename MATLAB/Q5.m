@@ -10,25 +10,22 @@ steps = 1000;
 seed = 100;
 rng(seed);
 
-Q = diag([.0015, .0015, 0.01, 0.001, 0.005, 0.01]);
-P0 = diag([1 1 0.025 1 1 0.025]);
+Q = diag([.00001, .00002, 0.0001, 0.00075, 0.00075, 0.0001]);
+P0 = diag([200 200 360 80 80 150])/100;
 
-runs = 100;
+runs = 7;
 EX = zeros(n, steps+1, runs);
 p = 5;
 EY = zeros(p, steps+1, runs);
 PS = zeros(n, n, steps+1, runs);
 SS = zeros(p, p, steps+1, runs);
-fig1 = figure(1);
-fig2 = figure(2);
-fig3 = figure(3);
-fig4 = figure(4);
+fig1 = figure;
 enablePlotDuring = true;
 for run = 1:runs
     disp(['run #', num2str(run)]);
     
     % generate truth for run
-    [x, y] = GenerateTruth(x0, u0, P0, Qtrue, Rtrue, Dt, steps, true);
+    [x, y] = GenerateTruth(x0, u0, zeros(size(P0)), Qtrue, Rtrue, Dt, steps, true);
     t = (0:(length(x)-1))*Dt;
 
     % assume we can get exact measurement noise from
@@ -39,19 +36,12 @@ for run = 1:runs
     [x_est, y_est, P, S] = EKF(x0, P0, u0, y, Q, R, Dt);
     
     % wrap angle diff too!!
-    ex = x - x_est;
-    ex(3,:) = angdiff(x_est(3,:),x(3,:));
-    ex(6,:) = angdiff(x_est(6,:),x(6,:));
-    ey = y - y_est;
-    ey(1,:) = angdiff(y_est(1,:),y(1,:));
-    ey(3,:) = angdiff(y_est(3,:),y(3,:));
+    ex = WrapX(x - x_est);
+    ey = WrapY(y - y_est);
     
     % Plot error during monte carlo runs
     if enablePlotDuring == true
         PlotStates(fig1,t,ex, ['State Errors, Run ',num2str(run)], P);
-        PlotMeasurements(fig2,t,y,'Ground Truth Measurements');
-        PlotStates(fig3,t,x,'Ground Truth States');
-        PlotMeasurements(fig4,t,ey,['Ground Truth Measurement Errors, Run ',num2str(run)]);
     end
     
     % save run data from NEES/NIS tests
@@ -66,17 +56,21 @@ end
 
 %--------------------------------------------------------------------------
 % Plots for (a)
-PlotStates(fig1,t,x - x_est, ['State Errors, Run ',num2str(run)], P);
+PlotStates(fig1,t,ex, ['State Errors, Run ',num2str(run)], P);
+
+fig2 = figure;
+fig3 = figure;
+fig4 = figure;
 PlotMeasurements(fig2,t,y,'Ground Truth Measurements');
 PlotStates(fig3,t,x,'Ground Truth States');
-PlotMeasurements(fig4,t,y - y_est,['Ground Truth Measurement Errors, Run ',num2str(run)]);
+PlotMeasurements(fig4,t,ey,['Ground Truth Measurement Errors, Run ',num2str(run)]);
 
 %--------------------------------------------------------------------------
 % Plots for (b)
-fig5 = figure(5);
+fig5 = figure;
 alpha = 0.05;
 PlotNees(fig5, NEES_bar, runs, n, alpha);
 %--------------------------------------------------------------------------
 % Plots for (c)
-fig6 = figure(6);
+fig6 = figure;
 PlotNis(fig6, NIS_bar, runs, p, alpha);

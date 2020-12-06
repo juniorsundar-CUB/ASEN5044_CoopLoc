@@ -26,30 +26,23 @@ for i=1:steps
     wk = zeros(1,n);
     [~, x_m] = ode45(@NL_DynModel, [0.0 Dt], x_p', opt, u', wk);
     x_m = x_m(end,:)';
-    
-    x_m(3) = wrapToPi(x_m(3));
-    x_m(6) = wrapToPi(x_m(6));
+    x_m = WrapX(x_m);
     
     % to calculate covariance, linearize "online"
     % about current state estimate
     [A_t,B_t,C_t] = Linearize(x_m, u);
     [F, ~, H] = Discretize(A_t, B_t ,C_t, Dt);
     P_m = F*P_p*F' + Q;
-
-    x_m(3) = wrapToPi(x_m(3));
-    x_m(6) = wrapToPi(x_m(6));
     
     % uese estimated state from NL ODEs; since Wk is AWGN,
     % its expected value is zero, set to zero
     vk = zeros(p,1);
     y_est(:,i) = NL_MeasModel(x_m, vk);
-    y_est(1,i) = wrapToPi(y_est(1,i));
-    y_est(3,i) = wrapToPi(y_est(3,i));
+    y_est = WrapY(y_est);
     
     % calculate innovation vector
     e_y = y(:,i) - y_est(:,i);
-    e_y(1) = wrapToPi(e_y(1));
-    e_y(3) = wrapToPi(e_y(3));
+    e_y = WrapY(e_y);
 
     %----------------------------------------------------------
     % Correction Step
@@ -60,10 +53,8 @@ for i=1:steps
 
     % calculate posterior state estimate and covariance
     x_p = x_m + K*e_y;
+    x_p = WrapX(x_p);
     P_p = (eye(n) - K*H)*P_m;
-
-    x_p(3) = wrapToPi(x_p(3));
-    x_p(6) = wrapToPi(x_p(6));
     
     % for each time-step, save estimate and covariance
     x_est(:,i) = x_p;

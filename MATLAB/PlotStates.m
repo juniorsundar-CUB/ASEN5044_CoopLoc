@@ -37,7 +37,7 @@ state = 1;
 
 plot(ax1, t,x(state,:))
 if displayError == true
-    plot(ax1, p(state,:),'r--'), plot(ax1, -p(state,:),'r--')
+    plot(ax1, t, p(state,:),'r--'), plot(ax1, t, -p(state,:),'r--')
 end
 ylabel(ax1, '$\xi_g$ (m)','FontSize',ftSize,'Interpreter','latex')
 xlabel(ax1, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -47,7 +47,7 @@ max(x(state,:))])
 state = state + 1;
 plot(ax3, t,x(state,:))
 if displayError == true
-    plot(ax3, p(state,:),'r--'), plot(ax3, -p(state,:),'r--')
+    plot(ax3, t, p(state,:),'r--'), plot(ax3, t, -p(state,:),'r--')
 end
 ylabel(ax3, '$\eta_g$ (m)','FontSize',ftSize,'Interpreter','latex')
 xlabel(ax3, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -57,7 +57,7 @@ max(x(state,:))])
 state = state + 1;
 plot(ax5, t,wrapToPi(x(state,:)))
 if displayError == true
-    plot(ax5, p(state,:),'r--'), plot(ax5, -p(state,:),'r--')
+    plot(ax5, t, p(state,:),'r--'), plot(ax5, t, -p(state,:),'r--')
 end
 ylabel(ax5, '$\theta_g$ (rad)','FontSize',ftSize,'Interpreter','latex')
 xlabel(ax5, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -67,7 +67,7 @@ max(wrapToPi(x(state,:)))])
 state = state + 1;
 plot(ax2, t,x(state,:))
 if displayError == true
-    plot(ax2, p(state,:),'r--'), plot(ax2, -p(state,:),'r--')
+    plot(ax2, t, p(state,:),'r--'), plot(ax2, t, -p(state,:),'r--')
 end
 ylabel(ax2, '$\xi_a$ (m)','FontSize',ftSize,'Interpreter','latex')
 xlabel(ax2, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -77,7 +77,7 @@ max(x(state,:))])
 state = state + 1;
 plot(ax4, t,x(state,:))
 if displayError == true
-    plot(ax4, p(state,:),'r--'), plot(ax4, -p(state,:),'r--')
+    plot(ax4, t, p(state,:),'r--'), plot(ax4, t, -p(state,:),'r--')
 end
 ylabel(ax4, '$\eta_a$ (m)','FontSize',ftSize,'Interpreter','latex')
 xlabel(ax4, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -87,7 +87,7 @@ max(x(state,:))])
 state = state + 1;
 plot(ax6, t,wrapToPi(x(state,:)))
 if displayError == true
-    plot(ax6, p(state,:),'r--'), plot(ax6, -p(state,:),'r--')
+    plot(ax6, t, p(state,:),'r--'), plot(ax6, t, -p(state,:),'r--')
 end
 ylabel(ax6, '$\theta_a$ (rad)','FontSize',ftSize,'Interpreter','latex')
 xlabel(ax6, 'Time(s)','FontSize',ftSize,'Interpreter','latex')

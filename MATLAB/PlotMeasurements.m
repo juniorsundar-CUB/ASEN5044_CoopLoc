@@ -33,7 +33,7 @@ sgtitle(title,'FontSize',ftSize+2,'Interpreter','latex')
 output = 1;
 plot(ax1, t,y(output,:))
 if displayError == true
-    hold all, plot(s(output,:),'r--'), plot(-s(output,:),'r--'), hold off
+    plot(ax1, t, s(output,:),'r--'), plot(ax1, t, -s(output,:),'r--')
 end
 ylabel(ax1, '$\gamma_{ag}$ (rad)','FontSize',ftSize,'Interpreter','latex')
 xlabel(ax1, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -43,7 +43,7 @@ grid on
 output = output + 1;
 plot(ax5, t,y(output,:))
 if displayError == true
-    hold all, plot(s(output,:),'r--'), plot(-s(output,:),'r--'), hold off
+    plot(ax5, t, s(output,:),'r--'), plot(ax5, t, -s(output,:),'r--')
 end
 ylabel(ax5, '$\rho_{ga}$ (m)','FontSize',ftSize,'Interpreter','latex')
 xlabel(ax5, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -53,7 +53,7 @@ grid on
 output = output + 1;
 plot(ax3, t,y(3,:))
 if displayError == true
-    hold all, plot(s(output,:),'r--'), plot(-s(output,:),'r--'), hold off
+    plot(ax3, t, s(output,:),'r--'), plot(ax3, t, -s(output,:),'r--')
 end
 ylabel(ax3, '$\gamma_{ga}$ (rad)','FontSize',ftSize,'Interpreter','latex')
 xlabel(ax3, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -63,7 +63,7 @@ grid on
 output = output + 1;
 plot(ax2, t,y(output,:))
 if displayError == true
-    hold all, plot(s(output,:),'r--'), plot(-s(output,:),'r--'), hold off
+    plot(ax2, t, s(output,:),'r--'), plot(ax2, t, -s(output,:),'r--')
 end
 ylabel(ax2, '$\xi_a$ (m)','FontSize',ftSize,'Interpreter','latex')
 xlabel(ax2, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
@@ -73,7 +73,7 @@ grid on
 output = output + 1;
 plot(ax4, t,y(output,:))
 if displayError == true
-    hold all, plot(s(output,:),'r--'), plot(-s(output,:),'r--'), hold off
+    plot(ax4, t, s(output,:),'r--'), plot(ax4, t, -s(output,:),'r--')
 end
 ylabel(ax4, '$\eta_a$ (m)','FontSize',ftSize,'Interpreter','latex')
 xlabel(ax4, 'Time(s)','FontSize',ftSize,'Interpreter','latex')
