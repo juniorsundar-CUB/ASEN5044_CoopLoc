@@ -10,10 +10,16 @@ steps = 1000;
 seed = 100;
 rng(seed);
 
-Q = diag([.00001, .00002, 0.0001, 0.00075, 0.00075, 0.0001]);
-P0 = diag([200 200 360 80 80 150])/100;
+Q = [	.000001     0           1e-6	0       0       0;
+        0           .000001     1e-6	0       0       0;
+        1e-6        1e-6        .001	0       0       0;
+        0           0           0     	.00075  0       1e-6;
+        0           0           0     	0       .00075  1e-6;
+        0           0           0     	1e-6	1e-6	.008]./10;
+    
+P0 = diag([(1/2)^2 (1/2)^2 (0.25/2)^2 (2.5/2)^2 (2.5/2)^2 (0.25/2)^2]);
 
-runs = 7;
+runs = 80;
 EX = zeros(n, steps+1, runs);
 p = 5;
 EY = zeros(p, steps+1, runs);
@@ -25,7 +31,7 @@ for run = 1:runs
     disp(['run #', num2str(run)]);
     
     % generate truth for run
-    [x, y] = GenerateTruth(x0, u0, zeros(size(P0)), Qtrue, Rtrue, Dt, steps, true);
+    [x, y] = GenerateTruth(x0, u0, P0, Qtrue, Rtrue, Dt, steps, true);
     t = (0:(length(x)-1))*Dt;
 
     % assume we can get exact measurement noise from
@@ -68,9 +74,10 @@ PlotMeasurements(fig4,t,ey,['Ground Truth Measurement Errors, Run ',num2str(run)
 %--------------------------------------------------------------------------
 % Plots for (b)
 fig5 = figure;
-alpha = 0.05;
+alpha = 0.01;
 PlotNees(fig5, NEES_bar, runs, n, alpha);
 %--------------------------------------------------------------------------
 % Plots for (c)
 fig6 = figure;
+alpha = 0.01;
 PlotNis(fig6, NIS_bar, runs, p, alpha);
