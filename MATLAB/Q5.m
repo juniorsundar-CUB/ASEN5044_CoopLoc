@@ -10,23 +10,36 @@ steps = 1000;
 seed = 100;
 rng(seed);
 
-Q = [	.000001     0           1e-6	0       0       0;
-        0           .000001     1e-6	0       0       0;
-        1e-6        1e-6        .001	0       0       0;
-        0           0           0     	.00075  0       1e-6;
-        0           0           0     	0       .00075  1e-6;
-        0           0           0     	1e-6	1e-6	.008]./18;
-    
-P0 = diag([(1/2)^2 (1/2)^2 (0.25/2)^2 (2.5/2)^2 (2.5/2)^2 (0.25/2)^2]);
+kgc = 1e-4;     % correlation of UGV position and UGV heading
+kac = 1e-3;     % correlation of UAV position and UAV heading
+kua = 0;        % correlation of UGV position and UAV heading
 
-runs = 100;
+Q = [	.000001	0   	kgc   	0       0   	kua;
+        0       .000001	kgc   	0       0       kua;
+        kgc   	kgc   	.002	0       0       0;
+        0     	0     	0     	.03  0   	    kac;
+        0    	0     	0     	0   	.03    kac;
+        kua   	kua    	0     	kac   	kac  	.025]./18;
+    
+Q = [  .000001     0           1e-6    0       0       0;
+        0           .000001     1e-6   0       0       0;
+        1e-6        1e-6        .001   0       0       0;
+        0           0           0      .015  0       0e-6;
+        0           0           0      0       .015  0e-6;
+        0           0           0      0e-6    0e-6    .008]./18;
+
+kp = 1;   
+P0 = diag([(kp*1/2)^2 (kp*1/2)^2 (kp*0.25/2)^2 ...
+    (kp*2.5/2)^2 (kp*2.5/2)^2 (kp*0.25/2)^2]);
+
+runs = 50;
 EX = zeros(n, steps+1, runs);
 p = 5;
 EY = zeros(p, steps+1, runs);
 PS = zeros(n, n, steps+1, runs);
 SS = zeros(p, p, steps+1, runs);
 fig1 = figure;
-enablePlotDuring = false;
+enablePlotDuring = true;
 for run = 1:runs
     disp(['run #', num2str(run)]);
     
@@ -74,7 +87,7 @@ PlotMeasurements(fig4,t,ey,['Ground Truth Measurement Errors, Run ',num2str(run)
 %--------------------------------------------------------------------------
 % Plots for (b)
 fig5 = figure;
-alpha = 0.01;
+alpha = 0.05;
 PlotNees(fig5, NEES_bar, runs, n, alpha);
 %--------------------------------------------------------------------------
 % Plots for (c)
