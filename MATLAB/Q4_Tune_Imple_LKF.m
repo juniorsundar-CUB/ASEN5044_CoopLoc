@@ -12,7 +12,7 @@ NEES_all = zeros(N,steps+1);
 NIS_all = zeros(N,steps+1);
 
 % Tuning parameters
-Q = diag([0.0001 0.0001 0.01 0.1 0.1 0.01]);
+Q = diag([0.0001 0.0001 0.01 0.1 0.1 0.01])*10;
 
 R = Rtrue;
 for i=1:N

@@ -9,7 +9,7 @@ S = zeros(p,p,steps+1);
 K = zeros(n,p,steps+1);
 
 dx(:,1) = dx_init;              % initial dx
-dy = y-y_nom;                   % ground truth dx
+dy = y - y_nom;              	% ground truth dx
 if wrapOn == true
     dx = WrapX(dx);
     dy = WrapY(dy);
