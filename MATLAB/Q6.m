@@ -10,10 +10,17 @@ if runMonteCarlo == true
     x0 = [10 0 pi/2 -60 0 -pi/2]';
     u0 = [2 -pi/18 12 pi/25]';
     steps = 1000;
-    runs = 1;
+    runs = 50;
 
     Q_lkf = diag([0.0001 0.0001 0.01 0.1 0.1 0.01]);
     Q_ekf = diag([.0015, .0015, 0.01, 0.001, 0.005, 0.01]);
+    
+    Q_ekf = [  .000001 	0     	1e-6	0       0       0;
+                0      	.000001	1e-6    0       0       0;
+                1e-6   	1e-6   	.001    0       0       0;
+                0      	0      	0       .015    0       0e-6;
+                0      	0      	0       0       .015    0e-6;
+                0     	0     	0       0e-6    0e-6    .008]./18;
     P0 = diag([1 1 0.025 1 1 0.025]);
 else
     x0 = [10 0 pi/2 -60 0 -pi/2]';
@@ -22,6 +29,13 @@ else
     runs = 1;
     Q_lkf = diag([0.0001 0.0001 0.01 0.1 0.1 0.01]);
     Q_ekf = diag([.0015, .0015, 0.01, 0.001, 0.005, 0.01]);
+    
+    Q_ekf = [  .000001 	0     	1e-6	0       0       0;
+            0      	.000001	1e-6    0       0       0;
+            1e-6   	1e-6   	.001    0       0       0;
+            0      	0      	0       .015    0       0e-6;
+            0      	0      	0       0       .015    0e-6;
+            0     	0     	0       0e-6    0e-6    .008]./18;
     P0 = diag([1 1 0.025 1 1 0.025]);
 end
 
@@ -91,7 +105,7 @@ for run = 1:runs
     
     % Run filter for all time-steps of run #k
     [x_est_lkf,y_est_lkf,~,P_lkf,S_lkf,~,~] = LKF(dx_init, P_init, x_nom, y_nom, x, unwrapped_y, ...
-        Fk, Hk, Ok, Q_lkf, R);
+        Fk, Hk, Ok, Q_lkf, R, true);
     
     % wrap angle diff too!!
     ex_lkf = x - x_est_lkf;

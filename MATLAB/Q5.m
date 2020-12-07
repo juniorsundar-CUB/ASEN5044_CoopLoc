@@ -9,17 +9,6 @@ n = size(x0,1);
 steps = 1000;
 seed = 100;
 rng(seed);
-
-kgc = 1e-4;     % correlation of UGV position and UGV heading
-kac = 1e-3;     % correlation of UAV position and UAV heading
-kua = 0;        % correlation of UGV position and UAV heading
-
-Q = [	.000001	0   	kgc   	0       0   	kua;
-        0       .000001	kgc   	0       0       kua;
-        kgc   	kgc   	.002	0       0       0;
-        0     	0     	0     	.03  0   	    kac;
-        0    	0     	0     	0   	.03    kac;
-        kua   	kua    	0     	kac   	kac  	.025]./18;
     
 Q = [  .000001     0           1e-6    0       0       0;
         0           .000001     1e-6   0       0       0;

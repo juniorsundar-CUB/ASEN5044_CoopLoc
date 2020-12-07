@@ -40,5 +40,5 @@ end
 dx_init = x_truth(:,1)-x_nominal(:,1);
 P_init = eye(6);
 
-[x_est,y_est,dx,P,S,e_x,e_y] = LKF(dx_init,P_init,x_nominal,y_nominal,x_truth,y_truth,Fk,Hk,Ok,Q,R);
+[x_est,y_est,dx,P,S,e_x,e_y] = LKF(dx_init,P_init,x_nominal,y_nominal,x_truth,y_truth,Fk,Hk,Ok,Q,R, true);
 end
