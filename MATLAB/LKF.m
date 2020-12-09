@@ -41,7 +41,7 @@ for i=1:steps
     % Correction Step
     S(:,:,i+1) = Hk(:,:,i+1)*P(:,:,i+1)*Hk(:,:,i+1)' + R;
     K(:,:,i+1) = P(:,:,i+1)*Hk(:,:,i+1)'*inv(S(:,:,i+1));
-    y_est(:,i+1) = y_nom(:,i) + Hk(:,:,i+1)*(dx(:,i+1));
+    y_est(:,i+1) = y_nom(:,i+1) + Hk(:,:,i+1)*(dx(:,i+1));
     
     e_y(:,i+1) = y(:,i+1) - y_est(:,i+1);
     if wrapOn == true

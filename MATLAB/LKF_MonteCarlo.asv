@@ -25,10 +25,7 @@ end
 % Generate DT matrices along nominal trajectory
 x_nominal = x_NL;
 y_nominal = y_NL;
-
-x_nominal = WrapX(x_NL);
-y_nominal = WrapY(y_NL);
-
+         
 Fk = zeros(6,6,length(t));
 Hk = zeros(5,6,length(t));
 Ok = zeros(6,6,length(t));

@@ -12,7 +12,7 @@ NEES_all = zeros(N,steps+1);
 NIS_all = zeros(N,steps+1);
 
 % Tuning parameters
-Q = diag([0.0001 0.0001 0.01 0.1 0.1 0.01])*10;
+Q = diag([0.0001 0.0001 0.01 0.1 0.1 0.01])*1;
 
 R = Rtrue;
 for i=1:N
@@ -23,8 +23,8 @@ for i=1:N
     [x_truth,y_truth,x_est,y_est,dx,P,S,e_x,e_y] = LKF_MonteCarlo(Q,R,steps);
     
     for k=1:steps+1
-        NEES(:,k) = e_x(:,k)'*inv(P(:,:,k))*e_x(:,k);
-        NIS(:,k) = e_y(:,k)'*inv(S(:,:,k))*e_y(:,k);
+        NEES(:,k) = e_x(:,k)'/(P(:,:,k))*e_x(:,k);
+        NIS(:,k) = e_y(:,k)'/(S(:,:,k))*e_y(:,k);
     end
     
     NEES_all(i,:) = NEES;
@@ -71,7 +71,7 @@ xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
 legend('$\bar{\epsilon}_y$','$r_1$','$r_2$','FontSize',12,'Interpreter','latex')
 axis([min(t) max(t) ry1-1 ry2+1])
 
-%__________________________________________________________________________
+%% __________________________________________________________________________
 
 figure(2)
 sgtitle('\bf{States Dynamics of Typical MC Run + LKF Estimate}','FontSize',18,'Interpreter','latex')
@@ -226,7 +226,7 @@ xlabel('Time | $t$ (s)','FontSize',14,'Interpreter','latex')
 grid on
 legend({'$e_{x}$','$\pm2\sigma$'},'FontSize',12,'Interpreter','latex')
 axis([min(t) max(t) -1 1])
-%__________________________________________________________________________
+%% __________________________________________________________________________
 
 figure(4)
 sgtitle('\bf{Measurement Dynamics of Typical MC Run + LKF Estimate}','FontSize',18,'Interpreter','latex')
