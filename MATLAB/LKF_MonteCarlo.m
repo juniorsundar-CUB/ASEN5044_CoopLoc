@@ -10,7 +10,7 @@ n = size(x_nom,1);
 P_init = diag([1 1 0.025 1 1 0.025]);
 
 t = 0:Dt:steps*Dt;
-
+Rtrue(2,2)=1;Rtrue(4,4)=1;Rtrue(5,5)=1;
 % Generate truth model outputs for nominal trajectories
 [x_truth, y_truth] = GenerateTruth(x_nom, u_nom, P_init, Qtrue, Rtrue, Dt, steps, true);
 

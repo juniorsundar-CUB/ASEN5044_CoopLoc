@@ -15,6 +15,7 @@ NIS_all = zeros(N,steps+1);
 Q = diag([0.0001 0.0001 0.01 0.1 0.1 0.01])*1;
 
 R = Rtrue;
+Rtrue(2,2)=1;Rtrue(4,4)=1;Rtrue(5,5)=1;
 for i=1:N
     disp(i)
     NEES = zeros(1,steps+1);
