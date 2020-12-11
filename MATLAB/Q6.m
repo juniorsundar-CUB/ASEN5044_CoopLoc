@@ -90,12 +90,12 @@ for run = 1:runs
         t = tvec(:,2:end);
         steps = size(y,2) - 1;
     end
-    if overlayAllRuns == true
-        if runMonteCarlo == true
-            PlotStates(fig1,t,x,'Ground Truth States, All Runs');
-        end
-        PlotMeasurements(fig2,t,y,'Ground Truth Measurements, All Runs');
-    end
+%     if overlayAllRuns == true
+%         if runMonteCarlo == true
+%             PlotStates(fig1,t,x,'Ground Truth States, All Runs');
+%         end
+%         PlotMeasurements(fig2,t,y,'Ground Truth Measurements, All Runs');
+%     end
 
     % assume we can get exact measurement noise from
     % specifications of sensors
@@ -134,7 +134,7 @@ for run = 1:runs
     %----------------------------------------------------------------------
     % EKF
     [x_est_ekf, y_est_ekf, P_ekf, S_ekf] = EKF(x0, P0, u0, y, Q_ekf, R, Dt);
-    
+
     % wrap angle diff too!!
     ex_ekf = x - x_est_ekf;
     ex_ekf(3,:) = angdiff(x_est_ekf(3,:),x(3,:));
@@ -151,14 +151,14 @@ for run = 1:runs
     %----------------------------------------------------------------------
     %----------------------------------------------------------------------
     % Plot error during monte carlo runs
-    if overlayAllRuns == true
-        if runMonteCarlo == true
-            PlotStates(fig3,t,ex_lkf, ['LKF State Errors, Runs ',num2str(run)], P_lkf);
-            PlotStates(fig5,t,ex_ekf, ['EKF State Errors, Runs ',num2str(run)], P_ekf);
-        end
-        PlotMeasurements(fig4,t,ey_lkf,['LKF Ground Truth Measurement Errors, Runs ',num2str(run)], S_lkf);
-        PlotMeasurements(fig6,t,ey_ekf,['EKF Ground Truth Measurement Errors, Runs ',num2str(run)], S_ekf);
-    end
+%     if overlayAllRuns == true
+%         if runMonteCarlo == true
+%             PlotStates(fig3,t,ex_lkf, ['LKF State Errors, Runs ',num2str(run)], P_lkf);
+%             PlotStates(fig5,t,ex_ekf, ['EKF State Errors, Runs ',num2str(run)], P_ekf);
+%         end
+%         PlotMeasurements(fig4,t,ey_lkf,['LKF Ground Truth Measurement Errors, Runs ',num2str(run)], S_lkf);
+%         PlotMeasurements(fig6,t,ey_ekf,['EKF Ground Truth Measurement Errors, Runs ',num2str(run)], S_ekf);
+%     end
 end
 
 if overlayAllRuns == false
@@ -171,6 +171,8 @@ if overlayAllRuns == false
     PlotMeasurements(fig4,t,ey_lkf,['LKF Ground Truth Measurement Errors, Runs ',num2str(run)], S_lkf);
     PlotMeasurements(fig6,t,ey_ekf,['EKF Ground Truth Measurement Errors, Runs ',num2str(run)], S_ekf);
 end
+
+%%
 
 %% Calculate NEES and NIS statistics 
 [NEES_lkf, NIS_lkf] = CalcStats(EX_lkf, EY_lkf, PS_lkf, SS_lkf);
