@@ -2,7 +2,7 @@
 close all, clearvars, clc
 load("cooplocalization_finalproj_KFdata.mat");
 
-useUnwrappedY = true;       % wrap Y for LKF
+useUnwrappedY = false;       % wrap Y for LKF
 runMonteCarlo = false;      % run MC or use Mat data
 overlayAllRuns = true;      % plot all runs on top of each other
 
@@ -20,8 +20,10 @@ if runMonteCarlo == true
                 1e-6   	1e-6   	.001    0       0       0;
                 0      	0      	0       .015    0       0e-6;
                 0      	0      	0       0       .015    0e-6;
-                0     	0     	0       0e-6    0e-6    .008]./18;
-    P0 = diag([1 1 0.025 1 1 0.025]);
+             	0     	0     	0       0e-6    0e-6    .008]./18;
+    kp = 1;   
+    P0 = diag([(kp*1/2)^2 (kp*1/2)^2 (kp*0.25/2)^2 ...
+        (kp*2.5/2)^2 (kp*2.5/2)^2 (kp*0.25/2)^2]);
 else
     x0 = [10 0 pi/2 -60 0 -pi/2]';
     u0 = [2 -pi/18 12 pi/25]';
@@ -69,14 +71,20 @@ for run = 1:runs
     %----------------------------------------------------------------------
     % generate data
     if runMonteCarlo == true
-        [x, y] = GenerateTruth(x0, u0, P0, Qtrue, Rtrue, Dt, steps, false);
+       if useUnwrappedY == true
+           [x, y] = GenerateTruth(x0, u0, P0, Qtrue, Rtrue, Dt, steps, false);
+       else
+           [x, y] = GenerateTruth(x0, u0, P0, Qtrue, Rtrue, Dt, steps, true);
+       end
         t = (0:(length(x)-1))*Dt;
         unwrapped_y = y;
     else
         y = ydata(:,2:end);
         unwrapped_y = y;
-        unwrapped_y(1,:) = unwrap(y(1,:));
-        unwrapped_y(3,:) =  unwrap(y(3,:));
+        if useUnwrappedY == true
+            unwrapped_y(1,:) = unwrap(y(1,:));
+            unwrapped_y(3,:) =  unwrap(y(3,:));
+        end
         x = ones(size(x0,1),size(y,2));
         x(:,1) = x0;
         t = tvec(:,2:end);
@@ -99,12 +107,14 @@ for run = 1:runs
     
     % generate nominal trajectory for run, along with DT matrices
     [x_nom,y_nom] = GenerateNom(x0, u0, steps, Dt);
+    x_nom = WrapX(x_nom);
+    y_nom = WrapY(y_nom);
     [Fk, Hk, Ok] = GenerateLKFMats(u0, x_nom, steps+1, p, Dt);
     dx_init = x0 - x_nom(:,1);
-    P_init = eye(n);
+    dx_init = WrapY(dx_init);
     
     % Run filter for all time-steps of run #k
-    [x_est_lkf,y_est_lkf,~,P_lkf,S_lkf,~,~] = LKF(dx_init, P_init, x_nom, y_nom, x, unwrapped_y, ...
+    [x_est_lkf,y_est_lkf,~,P_lkf,S_lkf,~,~] = LKF(dx_init, P0, x_nom, y_nom, x, unwrapped_y, ...
         Fk, Hk, Ok, Q_lkf, R, true);
     
     % wrap angle diff too!!
@@ -143,23 +153,23 @@ for run = 1:runs
     % Plot error during monte carlo runs
     if overlayAllRuns == true
         if runMonteCarlo == true
-            PlotStates(fig3,t,ex_lkf, ['LKF State Errors, Runs ',num2str(run)]);
-            PlotStates(fig5,t,ex_ekf, ['EKF State Errors, Runs ',num2str(run)]);
+            PlotStates(fig3,t,ex_lkf, ['LKF State Errors, Runs ',num2str(run)], P_lkf);
+            PlotStates(fig5,t,ex_ekf, ['EKF State Errors, Runs ',num2str(run)], P_ekf);
         end
-        PlotMeasurements(fig4,t,ey_lkf,['LKF Ground Truth Measurement Errors, Runs ',num2str(run)]);
-        PlotMeasurements(fig6,t,ey_ekf,['EKF Ground Truth Measurement Errors, Runs ',num2str(run)]);
+        PlotMeasurements(fig4,t,ey_lkf,['LKF Ground Truth Measurement Errors, Runs ',num2str(run)], S_lkf);
+        PlotMeasurements(fig6,t,ey_ekf,['EKF Ground Truth Measurement Errors, Runs ',num2str(run)], S_ekf);
     end
 end
 
 if overlayAllRuns == false
     if runMonteCarlo == true
         PlotStates(fig1,t,x,'Ground Truth States, All Runs');
-        PlotStates(fig3,t,ex_lkf, ['LKF State Errors, Runs ',num2str(run)]);
-        PlotStates(fig5,t,ex_ekf, ['EKF State Errors, Runs ',num2str(run)]);
+        PlotStates(fig3,t,ex_lkf, ['LKF State Errors, Runs ',num2str(run)], P_lkf);
+        PlotStates(fig5,t,ex_ekf, ['EKF State Errors, Runs ',num2str(run)], P_ekf);
     end
     PlotMeasurements(fig2,t,y,'Ground Truth Measurements, All Runs');
-    PlotMeasurements(fig4,t,ey_lkf,['LKF Ground Truth Measurement Errors, Runs ',num2str(run)]);
-    PlotMeasurements(fig6,t,ey_ekf,['EKF Ground Truth Measurement Errors, Runs ',num2str(run)]);
+    PlotMeasurements(fig4,t,ey_lkf,['LKF Ground Truth Measurement Errors, Runs ',num2str(run)], S_lkf);
+    PlotMeasurements(fig6,t,ey_ekf,['EKF Ground Truth Measurement Errors, Runs ',num2str(run)], S_ekf);
 end
 
 %% Calculate NEES and NIS statistics 
